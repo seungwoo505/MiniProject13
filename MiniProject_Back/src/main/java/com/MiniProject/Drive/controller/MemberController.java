@@ -1,4 +1,4 @@
-package com.MiniProject.Drive.controller;
+package com.MiniProject.Drive.Controller;
 
 import java.util.HashMap;
 import java.util.Map;
