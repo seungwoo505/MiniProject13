@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.MiniProject.Drive.dao.LoginDao">
+
+
+	<insert id="insertToken" parameterType="login">
+        INSERT INTO login (id, token)
+        VALUES (#{id}, #{token})
+        ON DUPLICATE KEY UPDATE token=#{token};
+    </insert>
+    
+	<delete id="deleteToken">
+		 DELETE FROM login
+   		 WHERE id = #{id} AND token = #{authorization}
+	</delete>
+ 
+</mapper>

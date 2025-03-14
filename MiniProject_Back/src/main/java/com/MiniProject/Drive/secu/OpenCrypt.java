@@ -1,4 +1,4 @@
-package com.MiniProject.Drive.secu;
+              package com.MiniProject.Drive.secu;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,12 +22,12 @@ public class OpenCrypt {
                System.out.println("원문: "+source+ "   SHA-256: "+
                                      byteData.length+","+byteArrayToHex(byteData));
            }catch(NoSuchAlgorithmException e){
-               e.printStackTrace(); 
+               e.printStackTrace();
            }
            return byteData;
      }
 	 	 
-	  public static byte[] generateKey(String algorithm,int keySize) throws NoSuchAlgorithmException {
+	public static byte[] generateKey(String algorithm,int keySize) throws NoSuchAlgorithmException {
 		 
 	       KeyGenerator keyGenerator = KeyGenerator.getInstance(algorithm);	 
 	       keyGenerator.init(keySize);
@@ -35,29 +35,29 @@ public class OpenCrypt {
 	       return key.getEncoded();	 
 }	
 
- public static String aesEncrypt(String msg, byte[] key) throws Exception {
-       SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
-        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
-        String iv = "AAAAAAAAAAAAAAAA";
-        cipher.init(Cipher.ENCRYPT_MODE, 
-        		       skeySpec,
-        		       new IvParameterSpec(iv.getBytes()));        
-        byte[] encrypted = cipher.doFinal(msg.getBytes());     
-        return  byteArrayToHex(encrypted);
- }
-	 
-public static String aesDecrypt(String msg,byte[] key ) throws Exception {
- 	        SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+	public static String aesEncrypt(String msg, byte[] key) throws Exception {
+	       SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
 	        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 	        String iv = "AAAAAAAAAAAAAAAA";
-	        cipher.init(Cipher.DECRYPT_MODE, 
+	        cipher.init(Cipher.ENCRYPT_MODE, 
 	        		       skeySpec,
-	        		       new IvParameterSpec(iv.getBytes()));  
-	        byte[] encrypted = hexToByteArray(msg);
-	        byte[] original = cipher.doFinal(encrypted);  
-	        return new String(original); 
-}
-	 
+	        		       new IvParameterSpec(iv.getBytes()));        
+	        byte[] encrypted = cipher.doFinal(msg.getBytes());     
+	        return  byteArrayToHex(encrypted);
+	 }
+		 
+	public static String aesDecrypt(String msg,byte[] key ) throws Exception {
+	 	        SecretKeySpec skeySpec = new SecretKeySpec(key, "AES");
+		        Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
+		        String iv = "AAAAAAAAAAAAAAAA";
+		        cipher.init(Cipher.DECRYPT_MODE, 
+		        		       skeySpec,
+		        		       new IvParameterSpec(iv.getBytes()));  
+		        byte[] encrypted = hexToByteArray(msg);
+		        byte[] original = cipher.doFinal(encrypted);  
+		        return new String(original); 
+	}
+		 
 	 public static byte[] hexToByteArray(String hex) {
 		    if (hex == null || hex.length() == 0) {
 		        return null;
