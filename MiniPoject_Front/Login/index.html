@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>드라이브 로그인</title>
+</head>
+<body>
+  <div class="login-container" id="login-container">
+    <h2>드라이브 로그인</h2>
+    <div class="input-group">
+      <label for="id">ID :</label>
+      <input type="text" id="id" name="id" placeholder="아이디 입력">
+    </div>
+    <div class="input-group">
+      <label for="pw">PW :</label>
+      <input type="password" id="pwd" name="pwd" placeholder="비밀번호 입력">
+    </div>
+    <button type="button" id="loginButton" class="login-button">로그인</button>
+    <button type="button" id="signupButton" class="signup-button">회원가입</button>
+  </div>
+</body>
+<link rel="stylesheet" href="style.css">
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="index.js"></script>
+</html>
