@@ -46,14 +46,15 @@ public class FileController {
             
             Path filePath = Paths.get(UPLOAD_DIR + encrypteName);
             
+            byte[] security_key2 = OpenCrypt.getSHA256(fileName, UUID.randomUUID().toString());
             
             // 파일 암호화 후 저장
-            byte[] encryptedData = encrypt(file.getBytes(), security_key);
+            byte[] encryptedData = encrypt(file.getBytes(), security_key2);
             File f = new File();
             f.setUserId(userId);
             f.setSecurity(security_key);
+            f.setSecurity2(security_key2);
             f.setSecurityName(encrypteName);
-            f.setFileName(fileName);
             fileService.uploadFile(f);
             
             System.out.println(f.getSecurity().toString());
@@ -82,7 +83,7 @@ public class FileController {
             byte[] encryptedData = Files.readAllBytes(filePath);
 
             // 파일 복호화
-            byte[] decryptedData = decrypt(encryptedData, f.getSecurity());
+            byte[] decryptedData = decrypt(encryptedData, f.getSecurity2());
             String originalFileName = decryptFileName(f.getSecurityName(), f.getSecurity());
 
             Map<String, Object> response = new HashMap<>();
