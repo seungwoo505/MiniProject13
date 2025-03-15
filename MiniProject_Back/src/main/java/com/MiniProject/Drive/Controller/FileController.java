@@ -11,6 +11,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.MiniProject.Drive.dto.File;
 import com.MiniProject.Drive.secu.OpenCrypt;
+import com.MiniProject.Drive.secu.Security;
 import com.MiniProject.Drive.service.FileService;
 
 import javax.crypto.Cipher;
@@ -42,14 +43,16 @@ public class FileController {
             String fileName = file.getOriginalFilename();
             byte[] security_key = OpenCrypt.getSHA256(fileName, UUID.randomUUID().toString());
             
-            String encrypteName = encryptFileName(fileName, security_key);
+            Security security = new Security();
+            
+            String encrypteName = security.encryptFileName(fileName, security_key);
             
             Path filePath = Paths.get(UPLOAD_DIR + encrypteName);
             
             byte[] security_key2 = OpenCrypt.getSHA256(fileName, UUID.randomUUID().toString());
             
             // 파일 암호화 후 저장
-            byte[] encryptedData = encrypt(file.getBytes(), security_key2);
+            byte[] encryptedData = security.encrypt(file.getBytes(), security_key2);
             File f = new File();
             f.setUserId(userId);
             f.setSecurity(security_key);
@@ -81,10 +84,12 @@ public class FileController {
         	
             Path filePath = Paths.get(UPLOAD_DIR + f.getSecurityName());
             byte[] encryptedData = Files.readAllBytes(filePath);
+            
+            Security security = new Security();
 
             // 파일 복호화
-            byte[] decryptedData = decrypt(encryptedData, f.getSecurity2());
-            String originalFileName = decryptFileName(f.getSecurityName(), f.getSecurity());
+            byte[] decryptedData = security.decrypt(encryptedData, f.getSecurity2());
+            String originalFileName = security.decryptFileName(f.getSecurityName(), f.getSecurity());
 
             Map<String, Object> response = new HashMap<>();
             response.put("fileName", originalFileName);  // 파일명
@@ -97,38 +102,41 @@ public class FileController {
         }
     }
     
-    // AES 암호화
-    private static byte[] encrypt(byte[] data, byte[] secretKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        SecretKey key = new SecretKeySpec(secretKey, "AES");
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-        return cipher.doFinal(data);
-    }
-
-    // AES 복호화
-    private static byte[] decrypt(byte[] data, byte[] secretKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        SecretKey key = new SecretKeySpec(secretKey, "AES");
-        cipher.init(Cipher.DECRYPT_MODE, key);
-        return cipher.doFinal(data);
-    }
-    
-    public static String encryptFileName(String fileName, byte[] secretKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        SecretKey key = new SecretKeySpec(secretKey, "AES");
-        cipher.init(Cipher.ENCRYPT_MODE, key);
-
-        byte[] encryptedBytes = cipher.doFinal(fileName.getBytes());
-        return Base64.getUrlEncoder().encodeToString(encryptedBytes); // URL-safe Base64 인코딩
-    }
-
-    // 파일 이름 복호화
-    public static String decryptFileName(String encryptedFileName, byte[] secretKey) throws Exception {
-        Cipher cipher = Cipher.getInstance("AES");
-        SecretKeySpec key = new SecretKeySpec(secretKey, "AES");
-        cipher.init(Cipher.DECRYPT_MODE, key);
-
-        byte[] decryptedBytes = cipher.doFinal(Base64.getUrlDecoder().decode(encryptedFileName));
-        return new String(decryptedBytes);
+    @PostMapping("/getFiles")
+    public ResponseEntity<Map<String, Object>[]> getFiles(@RequestBody Map<String, String> map) {
+    	File[] files;
+    	
+		try {
+			files = fileService.selectFile(map);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+		
+		Map<String, Object>[] response = new Map[files.length];
+		
+		for(int i = 0; i < response.length; i++) {
+			response[i] = new HashMap<>();
+		}
+		
+    	Security security = new Security();
+    	
+    	for(int i = 0; i < files.length; i++) {
+    		try {
+				String originalFileName = security.decryptFileName(files[i].getSecurityName(), files[i].getSecurity());
+				
+				response[i].put("fileId", files[i].getFileId());
+				response[i].put("userId", files[i].getUserId());
+				response[i].put("fileName", originalFileName);
+				response[i].put("uploadDate", files[i].getUploadDate());
+				response[i].put("updateDate", files[i].getUpdateDate());
+			} catch (Exception e) {
+				e.printStackTrace();
+				response[i].put("err", "파일이 손상되어 읽을 수 없습니다.");
+			}
+    	}
+    	
+    	return ResponseEntity.ok(response);
     }
 }
