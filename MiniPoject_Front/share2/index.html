@@ -56,7 +56,7 @@
           });
         })
         .catch(error => {
-          console.error('파일 목록 로드 실패:', error);
+          console.error('파일 목록 로드 실패:', error.data.msg);
         });
     }
 

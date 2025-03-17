@@ -38,8 +38,6 @@ public class FileShareController {
 	@PostMapping("/create")
 	public ResponseEntity<String> createShareURL(@RequestBody FileShare fs){
 		try {
-			
-			System.out.println(fs.toString());
 			String shareUrl = fileShareService.createShareURL(fs);
 			
 			if(fs.isShareUser()) {
@@ -144,12 +142,12 @@ public class FileShareController {
             String originalFileName = security.decryptFileName(f.getSecurityName(), f.getSecurity());
 
             Map<String, Object> response = new HashMap<>();
+            
             response.put("fileName", originalFileName);  // 파일명
             response.put("file", decryptedData);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-        	System.out.println(e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
 	}

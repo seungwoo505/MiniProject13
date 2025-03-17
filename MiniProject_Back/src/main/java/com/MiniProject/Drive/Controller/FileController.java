@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.MiniProject.Drive.dto.File;
+import com.MiniProject.Drive.secu.ClamAVScanner;
 import com.MiniProject.Drive.secu.OpenCrypt;
 import com.MiniProject.Drive.secu.Security;
 import com.MiniProject.Drive.service.FileService;
@@ -38,6 +39,11 @@ public class FileController {
     @PostMapping("/upload")
     public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("userId") String userId) {
         try {
+        	
+        	if(ClamAVScanner.scanFile(file)) {
+        		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
+        	}
+        	
             Files.createDirectories(Paths.get(UPLOAD_DIR));
             
             String fileName = file.getOriginalFilename();
@@ -53,14 +59,14 @@ public class FileController {
             
             // 파일 암호화 후 저장
             byte[] encryptedData = security.encrypt(file.getBytes(), security_key2);
+            String securityDetail = OpenCrypt.computeSHA256(file.getBytes());
             File f = new File();
             f.setUserId(userId);
             f.setSecurity(security_key);
             f.setSecurity2(security_key2);
             f.setSecurityName(encrypteName);
+            f.setSecurityDetail(securityDetail);
             fileService.uploadFile(f);
-            
-            System.out.println(f.getSecurity().toString());
             
             Files.write(filePath, encryptedData);
 
@@ -73,14 +79,15 @@ public class FileController {
     // 파일 다운로드 (복호화 후 전송)
     @PostMapping("/download")
     public ResponseEntity<Map<String, Object>> downloadFile(@RequestBody Map<String, String> map) {
-        try {
-        	
+    	Map<String, Object> response = new HashMap<>();
+    	
+    	try {
         	File f = fileService.downloadFile(map);
         	
         	if (f == null) {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 파일을 찾을 수 없으면 404
+        		response.put("msg", "파일을 찾을 수 없습니다.");
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response); // 파일을 찾을 수 없으면 404
             }
-        	
         	
             Path filePath = Paths.get(UPLOAD_DIR + f.getSecurityName());
             byte[] encryptedData = Files.readAllBytes(filePath);
@@ -90,15 +97,21 @@ public class FileController {
             // 파일 복호화
             byte[] decryptedData = security.decrypt(encryptedData, f.getSecurity2());
             String originalFileName = security.decryptFileName(f.getSecurityName(), f.getSecurity());
-
-            Map<String, Object> response = new HashMap<>();
+            
+            String securityDetail = OpenCrypt.computeSHA256(decryptedData);
+            
+            if(!securityDetail.equals(f.getSecurityDetail())) {
+            	response.put("msg", "파일이 위변조되었습니다.");
+            	return ResponseEntity.status(404).body(response);
+            }
+            
             response.put("fileName", originalFileName);  // 파일명
             response.put("file", decryptedData);
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
-        	System.out.println(e);
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        	response.put("msg", "파일이 손상되었습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
         }
     }
     

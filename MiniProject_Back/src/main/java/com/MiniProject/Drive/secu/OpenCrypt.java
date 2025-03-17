@@ -1,5 +1,6 @@
 package com.MiniProject.Drive.secu;
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Date;
@@ -9,6 +10,8 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+
+import org.springframework.web.multipart.MultipartFile;
 
 public class OpenCrypt {
 
@@ -82,6 +85,28 @@ public static String aesDecrypt(String msg,byte[] key ) throws Exception {
 		        sb.append(hexNumber.substring(hexNumber.length() - 2));
 		    }
 		    return sb.toString();
-		} 
+		}
+		
+		/**
+	     * 파일의 SHA-256 해시 값을 계산하여 16진수 문자열로 반환
+	     */
+		public static String computeSHA256(byte[] fileBytes) {
+	        try {
+	            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+	            byte[] hashBytes = digest.digest(fileBytes);
+	            return bytesToHex(hashBytes);
+	        } catch (NoSuchAlgorithmException e) {
+	            e.printStackTrace();
+	            return null;
+	        }
+	    }
+
+	    public static String bytesToHex(byte[] bytes) {
+	        StringBuilder sb = new StringBuilder();
+	        for (byte b : bytes) {
+	            sb.append(String.format("%02x", b));
+	        }
+	        return sb.toString();
+	    }
 	 
 }

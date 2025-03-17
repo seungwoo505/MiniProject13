@@ -7,8 +7,8 @@
   
   <insert id="uploadFile" parameterType="File">
     insert into
-    File(userId, security, security2, securityName)
-    values(#{userId}, #{security}, #{security2}, #{securityName})
+    File(userId, security, security2, securityName, securityDetail)
+    values(#{userId}, #{security}, #{security2}, #{securityName}, #{securityDetail})
   </insert>
   
   <select id="downloadFile" parameterType="java.util.Map" resultType="File">
