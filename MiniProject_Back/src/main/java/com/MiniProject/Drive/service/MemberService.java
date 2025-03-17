@@ -53,6 +53,9 @@ public class MemberService {
 	public Login tokenLogin(Member m) throws Exception {
 		String id=m.getId();
 		SaltInfo saltInfo=saltDao.selectSalt(id);
+		if(saltInfo == null) {
+			return null;
+		}
 		String pwd=m.getPwd();
 		byte [] pwdHash=OpenCrypt.getSHA256(pwd, saltInfo.getSalt());
 		String pwdHashHex=OpenCrypt.byteArrayToHex(pwdHash);
@@ -67,7 +70,6 @@ public class MemberService {
 				loginDao.insertToken(loginInfo);
 				return loginInfo;
 			}
-	
 		
 		return null;		 
 	}
