@@ -20,4 +20,12 @@ public class FileService {
 	public File downloadFile(Map<String, String> map) throws Exception{
 		return fileDao.downloadFile(map);
 	}
+	
+	public File[] selectFile(Map<String, String> map) throws Exception{
+		return fileDao.selectFile(map);
+	}
+	
+	public File findFile(Map<String, String> map) throws Exception{
+		return fileDao.findFile(map);
+	}
 }

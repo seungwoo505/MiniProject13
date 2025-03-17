@@ -32,8 +32,6 @@ async function downloadFile() {
     try {
         const response = await axios.post(`${BASE_URL}/download`, { fileId : fileName, userId : "이승우" })
 
-        console.log(response);
-
         if (response.status === 200) {
             const { fileName, file } = response.data;
             const blob = new Blob([new Uint8Array(atob(file).split('').map(char => char.charCodeAt(0)))], { type: 'application/octet-stream' });
@@ -46,9 +44,9 @@ async function downloadFile() {
             a.click();
             a.remove();
         } else {
-            alert("파일 다운로드 실패!");
+            alert(response.data.msg);
         }
-    } catch (error) {
-        console.error("다운로드 오류:", error);
+    } catch (e) {
+        alert(e.response.data.msg)
     }
 }

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.MiniProject.Drive.dao.FileShareDao">
+  
+  <insert id="createShareURL" parameterType="FileShare">
+    insert into
+    FileShareURL(userId, token, fileId, shareUser)
+    values(#{userId}, #{token}, #{fileId}, #{shareUser})
+  </insert>
+  
+  <insert id="createShareUser" parameterType="FileShare">
+  	insert into
+  	FileShareUser(fileId, shareId)
+  	values(#{fileId}, #{shareId})
+  </insert>
+  
+  <select id="selectShareURL" parameterType="String" resultType="FileShare">
+    select *
+    from FileShareURL
+    where 1=1
+    and token = #{token}
+    and timestampdiff(minute, expirationTime, now()) &lt;= 4320
+  </select>
+  
+  <select id="selectShareUser" parameterType="FileShare" resultType="FileShare">
+    select *
+    from FileShareUser
+    where 1=1
+    and shareId = #{shareId}
+    and fileId = #{fileId}
+  </select>
+</mapper>

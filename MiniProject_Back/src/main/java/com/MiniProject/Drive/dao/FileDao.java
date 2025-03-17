@@ -13,4 +13,7 @@ public interface FileDao {
 	
 	public File downloadFile(Map<String, String> map) throws Exception;
 	
+	public File[] selectFile(Map<String, String> map) throws Exception;
+	
+	public File findFile(Map<String, String> map) throws Exception;
 }

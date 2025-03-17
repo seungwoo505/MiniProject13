@@ -7,8 +7,8 @@
   
   <insert id="uploadFile" parameterType="File">
     insert into
-    File(userId, security, security2, securityName)
-    values(#{userId}, #{security}, #{security2}, #{securityName})
+    File(userId, security, security2, securityName, securityDetail)
+    values(#{userId}, #{security}, #{security2}, #{securityName}, #{securityDetail})
   </insert>
   
   <select id="downloadFile" parameterType="java.util.Map" resultType="File">
@@ -17,5 +17,19 @@
     where 1=1
     and fileId = #{fileId}
     and userId = #{userId}
+  </select>
+  
+  <select id="selectFile" parameterType="java.util.Map" resultType="File">
+  	select fileId, userId, security, securityName, uploadDate, updateDate
+  	from File
+  	where 1=1
+  	and userId = #{userId}
+  </select>
+  
+  <select id="findFile" parameterType="java.util.Map" resultType="File">
+  	select fileId, userId, security, securityName, uploadDate, updateDate
+  	from File
+  	where 1=1
+  	and fileId = #{fileId}
   </select>
 </mapper>
