@@ -21,7 +21,6 @@ public class ClamAVScanner {
             byte[] scanResult = client.scan(fileBytes);
             // scanResult에 "OK"가 포함되어 있으면 안전한 것으로 판단
             String result = new String(scanResult);
-            System.out.println("ClamAV scan result: " + result);
             return result.contains("OK");
         } catch (IOException e) {
             e.printStackTrace();

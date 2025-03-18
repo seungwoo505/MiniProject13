@@ -3,7 +3,9 @@ package com.MiniProject.Drive.Controller;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -103,6 +105,28 @@ public class FileShareController {
 			
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 		}
+	}
+	
+	@PostMapping("/shareFile")
+	public ResponseEntity<List<String>> selectShareFile(@RequestBody FileShare RequestFs){
+		try {
+			FileShare[] fs = fileShareService.selectShareFile(RequestFs);
+			List<String> list = new ArrayList<>();
+			
+			for(FileShare f : fs) {
+				list.add(f.getShareId());
+			}
+			return ResponseEntity.ok(list);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			List<String> list = new ArrayList<>();
+			System.out.println(e);
+			list.add("정보를 불러오는 중 오류가 발생했습니다.");
+			return ResponseEntity.status(404).body(list);
+		}
+		
+		
 	}
 	
 	@PostMapping("/download")
