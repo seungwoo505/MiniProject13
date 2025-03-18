@@ -1,0 +1,298 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body {
+  font-family: sans-serif;
+  color: #333;
+}
+
+/* 헤더 영역 */
+header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+  padding: 0 20px;
+  background-color: #f1f3f4;
+  border-bottom: 1px solid #ddd;
+}
+.header-left {
+  display: flex;
+  align-items: center;
+}
+.drive-text {
+  font-size: 18px;
+  font-weight: bold;
+}
+.header-center {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+}
+#search-bar {
+  width: 60%;
+  max-width: 400px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.btnLogin {
+  width: 150px;
+  height: 40px;
+  border-radius: 20px;
+  background-color: #373f3c;
+  border: 1px solid black;
+  color: white;
+  font-weight: bold;
+  margin: 10px 0 20px;
+}
+#login_button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  background-color: #4285f4;
+  color: #fff;
+  cursor: pointer;
+}
+#login_button:hover {
+  background-color: #2f6ad9;
+}
+
+/* 전체 레이아웃 */
+.sidebar-content {
+  display: flex;
+  height: calc(100vh - 60px); /* 헤더 제외 */
+}
+
+/* 사이드바 */
+.sidebar {
+  width: 250px;
+  background-color: #f8f9fa;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  flex-shrink: 0; 
+}
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+.sidebar li {
+  margin-bottom: 10px;
+}
+.sidebar a {
+  display: block;
+  padding: 10px 16px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+  border-radius: 20px;
+  transition: background-color 0.2s;
+}
+.sidebar a:hover {
+  background-color: #f1f3f4;
+}
+.sidebar a.active {
+  background-color: #cce5ff;
+  color: #000;
+}
+
+/* 파일 추가 버튼 */
+#add-file-btn {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  background-color: #34a853;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+#add-file-btn:hover {
+  background-color: #2c8d46;
+}
+
+/* 파일 목록 영역 */
+.file-area {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
+.file-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 10px;
+}
+/* 파일 리스트 컨테이너 */
+.file-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding: 20px;
+}
+
+/* 개별 파일 아이템 */
+.file-item {
+  width: 300px;
+  height: 300px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 파일명 영역: 한 줄, 넘치면 말줄임 */
+.file-item-name {
+  margin-top: 7px;
+  margin-left: 10px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 미리보기 영역 */
+.file-item-preview {
+  flex-grow: 1;
+  background-color: #f9f9f9;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 8px;
+}
+
+/* 썸네일 이미지 스타일 */
+.file-item-preview img {
+  max-width: 100%;
+  max-height: 100%;
+}
+
+
+
+.file-item:hover {
+  background-color: #f1f3f4;
+}
+
+/* 모달 공통 스타일 */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 9999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+.modal-content {
+  background-color: #fefefe;
+  margin: 100px auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 400px;
+  position: relative;
+  border-radius: 8px;
+}
+/* 파일 상세 모달는 너비 조절 */
+#fileDetailModal .modal-content {
+  width: 600px;
+}
+
+/* 닫기 버튼 (모달 내) */
+.close-upload, 
+.close-file-detail {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  position: absolute;
+  right: 12px;
+  top: 2px;
+}
+.close-upload:hover,
+.close-file-detail:hover,
+.close:focus,
+.close-upload:focus,
+.close-file-detail:focus {
+  color: #000;
+}
+.close-div {
+  margin-bottom: 25px;
+}
+
+
+
+/* 파일 업로드/다운로드 폼 */
+.file-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.file-container h2 {
+  margin-bottom: 10px;
+  font-size: 1.2em;
+  text-align: center;
+}
+.file-container input,
+.file-container button {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.file-container button {
+  background-color: #4285f4;
+  color: #fff;
+  cursor: pointer;
+  border: none;
+}
+.file-container button:hover {
+  background-color: #2f6ad9;
+}
+
+/* 파일 상세 모달 - 파일 정보 및 공유 섹션 */
+#detailFileOwner {
+  margin-top: 10px;
+  font-weight: bold;
+}
+#downloadFileBtn {
+  margin: 10px 0;
+}
+.share-div {
+  margin-top: 20px;
+}
+#shareTarget {
+  width: 100%;
+  margin-right: 10px;
+  font-weight: bold;
+  padding: 10px;
+  margin-bottom: 15px;
+  margin-top: 15px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+#generateLinkBtn {
+  float: right;
+}
+
+.fileDetailButton {
+background-color: #4285f4;
+padding: 10px;
+color: #fff;
+box-sizing: border-box;
+border-radius: 4px;
+border: 1px solid #ccc;
+cursor: pointer;
+}
+
+.fileDetailButton:hover {
+  background-color: #2f6ad9;
+}

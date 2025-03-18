@@ -10,10 +10,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.MiniProject.Drive.dto.File;
+import com.MiniProject.Drive.dto.Login;
 import com.MiniProject.Drive.secu.ClamAVScanner;
 import com.MiniProject.Drive.secu.OpenCrypt;
 import com.MiniProject.Drive.secu.Security;
 import com.MiniProject.Drive.service.FileService;
+import com.MiniProject.Drive.service.MemberService;
 
 import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
@@ -33,14 +35,19 @@ public class FileController {
 	@Autowired
 	FileService fileService;
 	
+	@Autowired
+	MemberService memberService;
+	
     private static final String UPLOAD_DIR = "upload/";
 
     // 파일 업로드 (암호화 후 저장)
     @PostMapping("/upload")
-    public ResponseEntity<String> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("userId") String userId) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("userId") String userId, @RequestHeader("Authorization") String token) {
         try {
-        	
-        	if(ClamAVScanner.scanFile(file)) {
+            Login login = new Login(userId, token);
+            Login validLogin = memberService.logincheck(login);
+            
+        	if(!ClamAVScanner.scanFile(file)) {
         		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
         	}
         	
@@ -68,9 +75,11 @@ public class FileController {
             f.setSecurityDetail(securityDetail);
             fileService.uploadFile(f);
             
-            Files.write(filePath, encryptedData);
+            Map<String, String> responseData = new HashMap<>();
+            responseData.put("message", "파일 업로드 성공 (암호화됨): " + file.getOriginalFilename());
+            responseData.put("token", validLogin.getToken());
 
-            return ResponseEntity.ok("파일 업로드 성공 (암호화됨): " + file.getOriginalFilename());
+            return ResponseEntity.ok(responseData);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("파일 업로드 실패! + " + e);
         }

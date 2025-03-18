@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>유레카 드라이브</title>
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <span class="drive-text">유레카 드라이브</span>
+    </div>
+    <div class="header-center">
+      <input type="text" id="search-bar" placeholder="검색어를 입력하세요..." />
+    </div>
+  <!-- 로그인 버튼-->
+    <div id="member-container">
+      <button id="login_button">로그인</button>
+    </div>
+  </header>
+
+
+  <div class="sidebar-content">
+    <!-- 왼쪽 사이드바 -->
+    <nav class="sidebar">
+      <button id="add-file-btn">파일 추가</button>
+      <ul>
+        <li><a href="#" id="myDocsLink" class="active">내 문서함</a></li>
+        <li><a href="#" id="sharedDocsLink">공유 문서함</a></li>
+      </ul>
+    </nav>
+
+  <!-- 파일 업로드 모달 -->
+  <div id="fileModal" class="modal">
+    <div class="modal-content">
+      <!-- 닫기 버튼 -->
+       <div class="close-div">
+        <span class="close-upload">&times;</span>
+       </div>
+      <!-- 파일 업로드-->
+      <div class="file-container">
+        <h2>파일 업로드</h2>
+        <input type="file" id="fileInput">
+        <button onclick="uploadFile()">업로드</button>
+      </div>
+    </div>
+  </div>
+
+    <!-- 파일 리스트 공간 -->
+    <main class="file-area">
+      <div id="file-list" class="file-list">
+      </div>
+    </main>
+  </div>
+
+  <!-- 파일 정보 모달 -->
+  <div id="fileDetailModal" class="modal">
+    <div class="modal-content">
+      <div class="close-div">
+        <span class="close-file-detail">&times;</span>
+      </div>
+      
+      <div class="Filedetail-div">
+        <h2 id="detailFileName"></h2>
+        <p id="detailFileOwner"></p>
+      <button class="fileDetailButton" id="downloadFileBtn"><i class="fa-solid fa-download"></i> 다운로드</button>
+      </div>
+
+      <div class="share-div">
+        <h2 class="share-target-text">공유 대상</h2>
+        <input type="text" id="shareTarget" placeholder="공유 대상 (공유할 대상 ID)" />
+      </div>
+
+      <div class="share-btn">
+        <button class="fileDetailButton" id="shareButton"><i class="fa-solid fa-share-nodes"></i> 공유</button>
+        <button class="fileDetailButton" id="generateLinkBtn"><i class="fa-solid fa-link"></i> 링크 생성</button>
+      </div>
+    </div>
+  </div>
+  
+  <link rel="stylesheet" href="/css/style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/js/index.js"></script>
+  <script src="/js/FileUpload.js"></script>
+  <script src="/js/File.js"></script>
+</body>
+</html>

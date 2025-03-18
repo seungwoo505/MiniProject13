@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>로그인/회원가입</title>
+</head>
+<body>
+  <header>
+  </header>
+
+  <div class="login-container">
+    <div class="tab-header">
+      <button class="tab-link active" data-tab="login-tab">로그인</button>
+      <button class="tab-link" data-tab="signup-tab">회원가입</button>
+    </div>
+    <div class="tab-body">
+      <!-- 로그인 탭 -->
+      <div id="login-tab" class="tab-content active">
+        <div class="row">
+          <span class="title">ID :</span>
+          <input type="text" id="loginid" placeholder="아이디 입력" />
+        </div>
+        <div class="error-message" id="login-id-error"></div>
+        <div class="row">
+          <span class="title">PW :</span>
+          <input type="password" id="loginpwd" placeholder="비밀번호 입력" />
+        </div>
+        <div class="error-message" id="login-pwd-error"></div>
+        <button class="modal-submit-btn" id="loginButton">로그인</button>
+      </div>
+      <!-- 회원가입 탭 -->
+      <div id="signup-tab" class="tab-content">
+        <div class="row">
+          <span class="title">ID :</span>
+          <input type="text" id="signupid" placeholder="영문, 숫자 5글자 이상" />
+        </div>
+        <div class="error-message" id="signup-id-error"></div>
+        <div class="row">
+          <span class="title">PW :</span>
+          <input type="password" id="signuppwd" placeholder="8자리 이상, 특수문자와 숫자 포함" />
+        </div>
+        <div class="error-message" id="signup-pwd-error"></div>
+        <button class="modal-submit-btn" id="signupButton">회원가입</button>
+      </div>
+    </div>
+  </div>
+
+  <link rel="stylesheet" href="/css/login.css">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="/js/login.js"></script>
+</body>
+</html>
