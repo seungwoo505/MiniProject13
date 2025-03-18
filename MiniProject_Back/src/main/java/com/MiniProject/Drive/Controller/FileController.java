@@ -47,7 +47,7 @@ public class FileController {
             Login login = new Login(userId, token);
             Login validLogin = memberService.logincheck(login);
             
-        	if(ClamAVScanner.scanFile(file)) {
+        	if(!ClamAVScanner.scanFile(file)) {
         		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
         	}
         	

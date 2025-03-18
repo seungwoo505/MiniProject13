@@ -52,4 +52,8 @@ public class FileShareService {
 	public FileShare selectShareUser(FileShare fs) throws Exception{
 		return fileShareDao.selectShareUser(fs);
 	}
+	
+	public FileShare[] selectShareFile(FileShare fs) throws Exception{
+		return fileShareDao.selectShareFile(fs);
+	}
 }

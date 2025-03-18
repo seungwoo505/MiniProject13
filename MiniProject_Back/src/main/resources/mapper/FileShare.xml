@@ -32,4 +32,11 @@
     and shareId = #{shareId}
     and fileId = #{fileId}
   </select>
+  
+  <select id="selectShareFile" parameterType="FileShare" resultType="FileShare">
+  	select *
+    from FileShareUser
+    where 1=1
+    and fileId = #{fileId}
+  </select>
 </mapper>

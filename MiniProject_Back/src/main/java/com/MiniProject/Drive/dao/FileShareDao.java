@@ -13,4 +13,6 @@ public interface FileShareDao {
 	public FileShare selectShareURL(String token) throws Exception;
 	
 	public FileShare selectShareUser(FileShare fs) throws Exception;
+	
+	public FileShare[] selectShareFile(FileShare fs) throws Exception;
 }
