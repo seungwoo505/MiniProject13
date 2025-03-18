@@ -7,14 +7,24 @@
 
 
 	<insert id="insertToken" parameterType="login">
-        INSERT INTO login (id, token)
-        VALUES (#{id}, #{token})
-        ON DUPLICATE KEY UPDATE token=#{token};
+        INSERT INTO login (userId, token)
+	    VALUES (#{userId}, #{token})
+	    ON DUPLICATE KEY UPDATE 
+        token = #{token}, 
+        logintime = CURRENT_TIMESTAMP;
     </insert>
     
 	<delete id="deleteToken">
 		 DELETE FROM login
-   		 WHERE id = #{id} AND token = #{authorization}
+   		 WHERE userId = #{userId} AND token = #{authorization}
 	</delete>
  
+ 	<select id="logincheck" resultType="login" parameterType="login">
+	    SELECT userId, token
+	    FROM login
+	    WHERE userId = #{userId}
+	      AND token = #{token}
+	      AND timestampdiff(minute, logintime, now()) &lt;= 30
+	</select>
+
 </mapper>

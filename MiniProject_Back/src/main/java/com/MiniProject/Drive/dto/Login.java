@@ -1,14 +1,14 @@
 package com.MiniProject.Drive.dto;
 
 public class Login {
-	private String id, token;
+	private String userId, token;
 
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getToken() {
@@ -24,15 +24,15 @@ public class Login {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Login(String id, String token) {
+	public Login(String userId, String token) {
 		super();
-		this.id = id;
+		this.userId = userId;
 		this.token = token;
 	}
 
 	@Override
 	public String toString() {
-		return "Login [id=" + id + ", token=" + token + "]";
+		return "Login [userId=" + userId + ", token=" + token + "]";
 	}
 	
 	

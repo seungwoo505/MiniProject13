@@ -6,12 +6,12 @@
 <mapper namespace="com.MiniProject.Drive.dao.SaltDao">
   
   <insert id="insertSalt" parameterType="SaltInfo">
-  	INSERT INTO saltInfo (id, salt)
-	VALUES (#{id}, #{salt})	
+  	INSERT INTO saltInfo (userId, salt)
+	VALUES (#{userId}, #{salt})	
   </insert>  
   
   <select id="selectSalt" parameterType="String" resultType="SaltInfo">
-  	select * from saltInfo where id=#{id}
+  	select * from saltInfo where userId=#{userId}
   </select>
   
 </mapper>

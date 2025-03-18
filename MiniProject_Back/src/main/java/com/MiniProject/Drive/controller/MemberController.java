@@ -25,7 +25,7 @@ public class MemberController {
 	public String signup(@RequestBody Member m) throws Exception {
 		try {
 			memberService.signup(m);
-			return m.getId()+"님 가입을 환영합니다";
+			return m.getUserId()+"님 가입을 환영합니다";
 		} catch (DuplicateKeyException e) {
 			return "이미 존재하는 ID입니다."; 
 		}
@@ -42,8 +42,8 @@ public class MemberController {
 		try {
 			Login loginInfo=memberService.tokenLogin(m);
 			
-			if(loginInfo!=null && loginInfo.getId()!=null && loginInfo.getToken()!=null) {
-				responseMap.put("Id", loginInfo.getId());
+			if(loginInfo!=null && loginInfo.getUserId()!=null && loginInfo.getToken()!=null) {
+				responseMap.put("userId", loginInfo.getUserId());
 				responseMap.put("Authorization", loginInfo.getToken());
 			}else {
 				responseMap.put("msg", "다시 로그인 해주세요");
@@ -59,9 +59,9 @@ public class MemberController {
 	
 	@PostMapping("logout") 
 	public String logout(@RequestHeader String authorization, @RequestBody Map<String, String> requestBody ) {
-		String id = requestBody.get("id");
+		String userId = requestBody.get("userId");
 	    try {
-	        memberService.logout(id, authorization);
+	        memberService.logout(userId, authorization);
 	        return "로그아웃 성공";
 	    } catch (Exception e) {
 	        e.printStackTrace();

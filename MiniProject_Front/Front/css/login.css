@@ -93,3 +93,9 @@ html, body {
     background-color: #2f6ad9;
   }
   
+  .error-message {
+    color: red;
+    font-size: 12px;
+    margin: 4px 10px; /* 좌우 여백은 입력 필드와 맞추기 위해 */
+  }
+  

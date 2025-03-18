@@ -2,14 +2,14 @@ package com.MiniProject.Drive.dto;
 
 public class SaltInfo {
 	
-	private String id, salt;
+	private String userId, salt;
 
-	public String getEmail() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setEmail(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 
 	public String getSalt() {
@@ -20,22 +20,22 @@ public class SaltInfo {
 		this.salt = salt;
 	}
 
-	public SaltInfo(String id, String salt) {
-		super();
-		this.id = id;
-		this.salt = salt;
-	}
-
 	public SaltInfo() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	public SaltInfo(String userId, String salt) {
+		super();
+		this.userId = userId;
+		this.salt = salt;
+	}
+
 	@Override
 	public String toString() {
-		return "SaltInfo [id=" + id + ", salt=" + salt + "]";
+		return "SaltInfo [userId=" + userId + ", salt=" + salt + "]";
 	}
-	
+
 	
 
 }

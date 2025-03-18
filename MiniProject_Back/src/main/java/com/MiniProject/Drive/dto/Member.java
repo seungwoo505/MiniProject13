@@ -4,13 +4,13 @@ import java.util.Date;
 
 public class Member {
 
-	private String id, pwd;
+	private String userId, pwd;
 	private Date registDate;
-	public String getId() {
-		return id;
+	public String getUserId() {
+		return userId;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public String getPwd() {
 		return pwd;
@@ -28,16 +28,16 @@ public class Member {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Member(String id, String pwd, Date registDate) {
+	public Member(String userId, String pwd, Date registDate) {
 		super();
-		this.id = id;
+		this.userId = userId;
 		this.pwd = pwd;
 		this.registDate = registDate;
 	}
 	@Override
 	public String toString() {
-		return "Member [id=" + id + ", pwd=" + pwd + ", registDate=" + registDate + "]";
+		return "Member [userId=" + userId + ", pwd=" + pwd + ", registDate=" + registDate + "]";
 	}
-	
+
 	
 }
