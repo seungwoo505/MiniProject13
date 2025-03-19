@@ -19,4 +19,6 @@ public interface FileShareDao {
 	public FileShare[] selectShareFile(FileShare fs) throws Exception;
 
 	public List<String> selectFileIdsByUserId(String shareId) throws Exception;
+
+	public void deleteShareUser(FileShare fs) throws Exception;
 }

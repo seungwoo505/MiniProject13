@@ -4,6 +4,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +139,8 @@ public class FileShareController {
 	@PostMapping("/download")
 	public ResponseEntity<Map<String, Object>> downloadShareURL(@RequestBody Map<String, String> map){
 		try {
-			FileShare fs = null;
+			System.out.println("수행중");
+			FileShare fs = new FileShare();
 			if(map.get("token") != null) {
 				fs = fileShareService.selectShareURL(map.get("token"));
 			}
@@ -146,10 +148,21 @@ public class FileShareController {
 			if(fs == null && map.get("shareUser").equals(0)) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 			}
+			
+			System.out.println(map.get("shareUser"));
+			System.out.println(map.get("shareUser"));
+			
+			boolean shareUser = map.get("shareUser").toString().equals("true");
+			
+			System.out.println(shareUser);
 
-			if(fs.isShareUser() || map.get("shareUser").equals(1)) {
+			if(fs.isShareUser() || shareUser) {
+				System.out.println("안에도 수행");
 				fs = new FileShare();
 				fs.setShareId(map.get("shareId"));
+				fs.setShareUser(true);
+				fs.setFileId(map.get("fileId"));
+				fs.setUserId(map.get("userId"));
 				FileShare fs2 = fileShareService.selectShareUser(fs);
 
 				if(fs2 == null) {
@@ -196,17 +209,17 @@ public class FileShareController {
         try {
             validLogin = memberService.logincheck(login);
             if (validLogin == null) {
-                Map<String, Object>[] emptyResponse = new Map[1];
+                Map<String, Object>[] emptyResponse = new HashMap[1];
                 emptyResponse[0] = new HashMap<>();
                 emptyResponse[0].put("token", null);
-                return ResponseEntity.ok(emptyResponse);
+                return ResponseEntity.status(404).body(emptyResponse);
             }
         } catch (Exception e) {
             e.printStackTrace();
-            Map<String, Object>[] emptyResponse = new Map[1];
+            Map<String, Object>[] emptyResponse = new HashMap[1];
             emptyResponse[0] = new HashMap<>();
             emptyResponse[0].put("token", null);
-            return ResponseEntity.ok(emptyResponse);
+            return ResponseEntity.status(404).body(emptyResponse);
         }
 
 
@@ -214,15 +227,15 @@ public class FileShareController {
             List<String> fileIds = fileShareService.getFileIdsByUserId(userId);
 
             if (fileIds.isEmpty()) {
-                Map<String, Object>[] emptyResponse = new Map[1];
+                Map<String, Object>[] emptyResponse = new HashMap[1];
                 emptyResponse[0] = new HashMap<>();
                 emptyResponse[0].put("token", validLogin.getToken());
-                return ResponseEntity.ok(emptyResponse);
+                return ResponseEntity.status(203).body(emptyResponse);
             }
 
             List<MyFile> files = fileService.getFilesByIds(fileIds);
 
-            Map<String, Object>[] response = new Map[files.size()];
+            Map<String, Object>[] response = new HashMap[files.size()];
 
 
             Security security = new Security();

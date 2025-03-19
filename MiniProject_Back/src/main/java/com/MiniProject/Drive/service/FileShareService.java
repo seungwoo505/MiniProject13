@@ -27,14 +27,20 @@ public class FileShareService {
 		String token = UUID.randomUUID().toString();
 
 		fs.setToken(token);
-
+		
+		fileShareDao.deleteShareUser(fs);
 		fileShareDao.createShareURL(fs);
 
-		return "http://127.0.0.1:5500/MiniProject_Front/share/select.html?token=" + token;
+		return "http://127.0.0.1:5500/MiniProject_Front/Front/share/index.html?token=" + token;
 	}
 
 	public void createShareUser(FileShare fs) throws Exception{
-		fileShareDao.createShareUser(fs);
+		for(String s : fs.getShareIds()) {
+			if(!s.equals("")) {
+				fs.setShareId(s);
+				fileShareDao.createShareUser(fs);
+			}
+		}
 	}
 
 	public FileShare selectShareURL(String token) throws Exception{

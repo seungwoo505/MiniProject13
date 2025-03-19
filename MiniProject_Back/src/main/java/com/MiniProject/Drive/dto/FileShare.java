@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class FileShare {
 	private String userId, token, fileId, fileName, shareId;
+	private String[] shareIds;
 	private boolean shareUser;
 	private Date expirationTime;
 
@@ -12,7 +13,7 @@ public class FileShare {
 		// TODO Auto-generated constructor stub
 	}
 
-	public FileShare(String userId, String token, String fileId, String fileName, String shareId, boolean shareUser,
+	public FileShare(String userId, String token, String fileId, String fileName, String shareId, String[] shareIds, boolean shareUser,
 			Date expirationTime) {
 		super();
 		this.userId = userId;
@@ -20,6 +21,7 @@ public class FileShare {
 		this.fileId = fileId;
 		this.fileName = fileName;
 		this.shareId = shareId;
+		this.shareIds = shareIds;
 		this.shareUser = shareUser;
 		this.expirationTime = expirationTime;
 	}
@@ -53,6 +55,12 @@ public class FileShare {
 	}
 	public void setShareId(String shareId) {
 		this.shareId = shareId;
+	}
+	public String[] getShareIds() {
+		return shareIds;
+	}
+	public void setShareIds(String[] shareIds) {
+		this.shareIds = shareIds;
 	}
 	public boolean isShareUser() {
 		return shareUser;
