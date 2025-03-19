@@ -47,15 +47,15 @@ public class FileController {
 
     // 파일 업로드 (암호화 후 저장)
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("userId") String userId/*, @RequestHeader("Authorization") String token*/) {
+    public ResponseEntity<?> uploadFile(@RequestParam("file") MultipartFile file, @RequestParam("userId") String userId, @RequestHeader("Authorization") String token) {
         try {
-            //Login login = new Login(userId, token);
-            //Login validLogin = memberService.logincheck(login);
+            Login login = new Login(userId, token);
+            Login validLogin = memberService.logincheck(login);
             
-//        	if(!ClamAVScanner.scanFile(file)) {
-//        		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
-//        	}
-        	
+        	if(!ClamAVScanner.scanFile(file)) {
+        		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
+        	}
+
             Files.createDirectories(Paths.get(UPLOAD_DIR));
             
             String fileName = file.getOriginalFilename();
@@ -84,7 +84,7 @@ public class FileController {
           
             Map<String, String> responseData = new HashMap<>();
             responseData.put("message", "파일 업로드 성공 (암호화됨): " + file.getOriginalFilename());
-            //responseData.put("token", validLogin.getToken());
+            responseData.put("token", validLogin.getToken());
 
             return ResponseEntity.ok(responseData);
         } catch (Exception e) {
