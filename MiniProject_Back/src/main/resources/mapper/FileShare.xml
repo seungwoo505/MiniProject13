@@ -33,10 +33,11 @@
     and fileId = #{fileId}
   </select>
   
-  <select id="selectShareFile" parameterType="FileShare" resultType="FileShare">
-  	select *
-    from FileShareUser
-    where 1=1
-    and fileId = #{fileId}
+  <select id="selectFileIdsByUserId" parameterType="String" resultType="String">
+    SELECT fileId
+    FROM FileShareUser
+    WHERE shareId = #{shareId}
   </select>
+
+  
 </mapper>

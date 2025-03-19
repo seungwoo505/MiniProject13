@@ -61,7 +61,7 @@ public class MemberController {
 	public String logout(@RequestHeader String authorization, @RequestBody Map<String, String> requestBody ) {
 		String userId = requestBody.get("userId");
 	    try {
-	        memberService.logout(userId, authorization);
+	        memberService.logout(userId);
 	        return "로그아웃 성공";
 	    } catch (Exception e) {
 	        e.printStackTrace();
