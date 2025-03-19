@@ -15,29 +15,55 @@ async function downloadFile() {
     }
 
     try {
-        const response = await axios.post(`${BASE_URL}/download`,
-            { userId: userId, fileId: fileId },
-            { headers: { "Authorization": token } });
-
-        if (response.status === 200) {
-            const { fileName, file } = response.data;
-            const blob = new Blob([new Uint8Array(atob(file).split('').map(char => char.charCodeAt(0)))], { type: 'application/octet-stream' });
-            const downloadUrl = window.URL.createObjectURL(blob);
-            const a = document.createElement("a");
-
-
-            a.href = downloadUrl;
-            a.download = fileName;
-            document.body.appendChild(a);
-            a.click();
-            a.remove();
-            if (response.data.token) {
-                sessionStorage.setItem("Authorization", response.data.token);
+        if(shareModal.dataset.fileId === undefined){
+            const response = await axios.post(`${BASE_URL}/download`,
+                { userId: userId, fileId: fileId },
+                { headers: { "Authorization": token } });
+    
+            if (response.status === 200) {
+                const { fileName, file } = response.data;
+                const blob = new Blob([new Uint8Array(atob(file).split('').map(char => char.charCodeAt(0)))], { type: 'application/octet-stream' });
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+    
+    
+                a.href = downloadUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                if (response.data.token) {
+                    sessionStorage.setItem("Authorization", response.data.token);
+                }
+            } else {
+                alert(response.data.msg);
+            }   
+        }else{
+            console.log(shareModal.dataset);
+            const response = await axios.post(`${BASE_URL}/share/download`,
+                { fileId: fileId, shareId : userId, userId : shareModal.dataset.ownerId, shareUser : userId === undefined ? false : true }/*,
+                { headers: { "Authorization": token } }*/);
+    
+            if (response.status === 200) {
+                const { fileName, file } = response.data;
+                const blob = new Blob([new Uint8Array(atob(file).split('').map(char => char.charCodeAt(0)))], { type: 'application/octet-stream' });
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
+    
+    
+                a.href = downloadUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+                if (response.data.token) {
+                    sessionStorage.setItem("Authorization", response.data.token);
+                }
+            } else {
+                alert(response.data);
             }
-        } else {
-            alert(response.data.msg);
         }
     } catch (e) {
-        alert(e.response.data.msg)
+        alert(e.response.data.msg);
     }
 }
