@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>파일 삭제 테스트</title>
+  <!-- 부트스트랩 CSS (간단한 스타일 적용) -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div class="container mt-5">
+    <h1>파일 삭제 테스트</h1>
+    <div class="form-group">
+      <label for="fileId">삭제할 파일 ID:</label>
+      <input type="text" id="fileId" class="form-control" placeholder="파일 ID 입력">
+    </div>
+    <button id="deleteBtn" class="btn btn-danger">파일 삭제</button>
+    <div id="result" class="mt-3"></div>
+  </div>
+
+  <script>
+    document.getElementById('deleteBtn').addEventListener('click', function() {
+      const fileId = document.getElementById('fileId').value.trim();
+      if(!fileId) {
+        alert("파일 ID를 입력하세요.");
+        return;
+      }
+      // DELETE 요청: API 엔드포인트는 상황에 맞게 수정하세요.
+      axios.post(`http://localhost:8080/deleteFile`, {fileId, userId : "이승우"})
+        .then(function(response) {
+          document.getElementById('result').innerHTML = `<div class="alert alert-success">삭제 성공: ${response.data}</div>`;
+        })
+        .catch(function(error) {
+          console.error(error);
+          let errorMsg = error.response && error.response.data ? error.response.data : error.message;
+          document.getElementById('result').innerHTML = `<div class="alert alert-danger">삭제 실패: ${errorMsg}</div>`;
+        });
+    });
+  </script>
+</body>
+</html>

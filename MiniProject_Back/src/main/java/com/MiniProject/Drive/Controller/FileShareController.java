@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.MiniProject.Drive.dto.File;
+import com.MiniProject.Drive.dto.MyFile;
 import com.MiniProject.Drive.dto.FileShare;
 import com.MiniProject.Drive.dto.Login;
 import com.MiniProject.Drive.secu.Security;
@@ -148,6 +148,7 @@ public class FileShareController {
 			}
 			
 			if(fs.isShareUser() || map.get("shareUser").equals(1)) {
+				fs = new FileShare();
 				fs.setShareId(map.get("shareId"));
 				FileShare fs2 = fileShareService.selectShareUser(fs);
 				
@@ -159,7 +160,7 @@ public class FileShareController {
 			map.put("fileId", fs.getFileId());
 			map.put("userId", fs.getUserId());
 			
-        	File f = fileService.downloadFile(map);
+			MyFile f = fileService.downloadFile(map);
         	
         	if (f == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 파일을 찾을 수 없으면 404

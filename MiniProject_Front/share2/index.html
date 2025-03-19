@@ -74,15 +74,16 @@
 
     // 공유 대상 목록을 불러오는 함수
     function loadShareList(fileId) {
-      axios.get('/api/files/' + fileId + '/shares')
+      axios.post('http://localhost:8080/share/shareFile', {fileId})
         .then(response => {
           const shares = response.data;
           const shareList = document.getElementById('shareList');
           shareList.innerHTML = '';
           shares.forEach(share => {
+            console.log(share);
             const li = document.createElement('li');
             li.className = 'list-group-item';
-            li.textContent = share.email;
+            li.textContent = share;
             shareList.appendChild(li);
           });
         })

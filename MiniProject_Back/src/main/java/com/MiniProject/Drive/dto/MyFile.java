@@ -3,16 +3,16 @@ package com.MiniProject.Drive.dto;
 import java.util.Arrays;
 import java.util.Date;
 
-public class File {
+public class MyFile {
 	private String FileId, userId, securityName, securityDetail;
 	private byte[] security, security2;
 	private Date uploadDate, updateDate;
 	
-	public File() {
+	public MyFile() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public File(String fileId, String userId, String securityName, String securityDetail, byte[] security,
+	public MyFile(String fileId, String userId, String securityName, String securityDetail, byte[] security,
 			byte[] security2, Date uploadDate, Date updateDate) {
 		super();
 		FileId = fileId;

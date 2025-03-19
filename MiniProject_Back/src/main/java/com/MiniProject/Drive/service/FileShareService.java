@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import com.MiniProject.Drive.dao.FileDao;
 import com.MiniProject.Drive.dao.FileShareDao;
-import com.MiniProject.Drive.dto.File;
+import com.MiniProject.Drive.dto.MyFile;
 import com.MiniProject.Drive.dto.FileShare;
 import com.MiniProject.Drive.secu.Security;
 
@@ -31,7 +31,7 @@ public class FileShareService {
 		
 		fileShareDao.createShareURL(fs);
 		
-		return "http://127.0.0.1:5500/MiniPoject_Front/share/select.html?token=" + token;
+		return "http://127.0.0.1:5500/MiniProject_Front/share/select.html?token=" + token;
 	}
 	
 	public void createShareUser(FileShare fs) throws Exception{
@@ -43,10 +43,10 @@ public class FileShareService {
 		
 		Map<String, String> map = new HashMap<>();
 		map.put("fileId", fs.getFileId());
-		File file = fileDao.findFile(map);
+		MyFile myFile = fileDao.findFile(map);
 		Security security = new Security();
 		
-		String originalFileName = security.decryptFileName(file.getSecurityName(), file.getSecurity());
+		String originalFileName = security.decryptFileName(myFile.getSecurityName(), myFile.getSecurity());
 		fs.setFileName(originalFileName);
 		
 		return fs;
