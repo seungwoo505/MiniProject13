@@ -220,7 +220,7 @@ public class FileShareController {
                 return ResponseEntity.ok(emptyResponse);
             }
             
-            List<File> files = fileService.getFilesByIds(fileIds);
+            List<MyFile> files = fileService.getFilesByIds(fileIds);
 
             Map<String, Object>[] response = new Map[files.size()];
             
@@ -228,7 +228,7 @@ public class FileShareController {
             Security security = new Security();
             
             for (int i = 0; i < files.size(); i++) {
-                File f = files.get(i);
+                MyFile f = files.get(i);
                 response[i] = new HashMap<>();
                 try {
                     String originalFileName = security.decryptFileName(f.getSecurityName(), f.getSecurity());

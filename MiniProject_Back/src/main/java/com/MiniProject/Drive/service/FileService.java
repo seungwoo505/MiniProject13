@@ -51,7 +51,7 @@ public class FileService {
 		return fileDao.selectComment(comment);
 	}
   
-  public List<File> getFilesByIds(List<String> fileIds) throws Exception {
+  public List<MyFile> getFilesByIds(List<String> fileIds) throws Exception {
     return fileDao.selectFilesByIds(fileIds);
   }
 }

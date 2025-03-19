@@ -29,5 +29,5 @@ public interface FileDao {
 	
 	public Comment[] selectComment(Comment comment) throws Exception;
 	
-	public List<File> selectFilesByIds(List<String> fileIds) throws Exception;
+	public List<MyFile> selectFilesByIds(List<String> fileIds) throws Exception;
 }
