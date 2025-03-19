@@ -1,10 +1,10 @@
 package com.MiniProject.Drive.secu;
 
+import java.io.IOException;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import fi.solita.clamav.ClamAVClient;
-
-import java.io.IOException;
 
 public class ClamAVScanner {
 

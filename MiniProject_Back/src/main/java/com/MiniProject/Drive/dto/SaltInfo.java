@@ -1,7 +1,7 @@
 package com.MiniProject.Drive.dto;
 
 public class SaltInfo {
-	
+
 	private String userId, salt;
 
 	public String getUserId() {
@@ -36,6 +36,6 @@ public class SaltInfo {
 		return "SaltInfo [userId=" + userId + ", salt=" + salt + "]";
 	}
 
-	
+
 
 }

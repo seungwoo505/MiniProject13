@@ -39,5 +39,5 @@ public class Member {
 		return "Member [userId=" + userId + ", pwd=" + pwd + ", registDate=" + registDate + "]";
 	}
 
-	
+
 }

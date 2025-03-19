@@ -6,12 +6,12 @@ public class FileShare {
 	private String userId, token, fileId, fileName, shareId;
 	private boolean shareUser;
 	private Date expirationTime;
-	
+
 	public FileShare() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 	public FileShare(String userId, String token, String fileId, String fileName, String shareId, boolean shareUser,
 			Date expirationTime) {
 		super();
@@ -23,7 +23,7 @@ public class FileShare {
 		this.shareUser = shareUser;
 		this.expirationTime = expirationTime;
 	}
-	
+
 	public String getUserId() {
 		return userId;
 	}
