@@ -52,6 +52,6 @@ public class FileService {
 	}
   
   public List<MyFile> getFilesByIds(List<String> fileIds) throws Exception {
-    return fileDao.selectFilesByIds(fileIds);
+	  return fileDao.selectFilesByIds(fileIds);
   }
 }

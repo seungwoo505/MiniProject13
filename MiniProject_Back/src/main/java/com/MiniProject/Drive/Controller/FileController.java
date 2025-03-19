@@ -52,10 +52,10 @@ public class FileController {
             Login login = new Login(userId, token);
             Login validLogin = memberService.logincheck(login);
             
-//        	if(!ClamAVScanner.scanFile(file)) {
-//        		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
-//        	}
-       	
+        	if(!ClamAVScanner.scanFile(file)) {
+        		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
+        	}
+
             Files.createDirectories(Paths.get(UPLOAD_DIR));
             
             String fileName = file.getOriginalFilename();
