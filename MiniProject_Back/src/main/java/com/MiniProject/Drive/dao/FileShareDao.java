@@ -1,5 +1,7 @@
 package com.MiniProject.Drive.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import com.MiniProject.Drive.dto.FileShare;
@@ -15,4 +17,6 @@ public interface FileShareDao {
 	public FileShare selectShareUser(FileShare fs) throws Exception;
 	
 	public FileShare[] selectShareFile(FileShare fs) throws Exception;
+	
+	public List<String> selectFileIdsByUserId(String shareId) throws Exception;
 }

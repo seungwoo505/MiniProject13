@@ -16,7 +16,7 @@
     
 	<delete id="deleteToken">
 		 DELETE FROM login
-   		 WHERE userId = #{userId} AND token = #{authorization}
+   		 WHERE userId = #{userId}
 	</delete>
  
  	<select id="logincheck" resultType="login" parameterType="login">

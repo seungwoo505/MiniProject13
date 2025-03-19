@@ -1,5 +1,6 @@
 package com.MiniProject.Drive.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,4 +29,8 @@ public class FileService {
 	public File findFile(Map<String, String> map) throws Exception{
 		return fileDao.findFile(map);
 	}
+	
+    public List<File> getFilesByIds(List<String> fileIds) throws Exception {
+        return fileDao.selectFilesByIds(fileIds);
+    }
 }

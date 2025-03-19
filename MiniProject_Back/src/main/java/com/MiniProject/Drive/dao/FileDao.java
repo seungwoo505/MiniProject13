@@ -1,5 +1,6 @@
 package com.MiniProject.Drive.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -16,4 +17,6 @@ public interface FileDao {
 	public File[] selectFile(Map<String, String> map) throws Exception;
 	
 	public File findFile(Map<String, String> map) throws Exception;
+	
+	public List<File> selectFilesByIds(List<String> fileIds) throws Exception;
 }
