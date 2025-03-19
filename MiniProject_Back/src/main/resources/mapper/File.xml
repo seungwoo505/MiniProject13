@@ -68,7 +68,7 @@
   	and fileId=#{fileId}
   </select>
   
-  <select id="selectFilesByIds" parameterType="list" resultType="File">
+  <select id="selectFilesByIds" parameterType="list" resultType="MyFile">
     SELECT * 
     FROM File 
     WHERE fileId IN 

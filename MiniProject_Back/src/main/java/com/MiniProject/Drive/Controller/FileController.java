@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.MiniProject.Drive.dto.Comment;
-import com.MiniProject.Drive.dto.MyFile;
 import com.MiniProject.Drive.dto.Login;
+import com.MiniProject.Drive.dto.MyFile;
 import com.MiniProject.Drive.secu.ClamAVScanner;
 import com.MiniProject.Drive.secu.OpenCrypt;
 import com.MiniProject.Drive.secu.Security;
@@ -22,7 +22,6 @@ import javax.crypto.Cipher;
 import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.net.URI;
@@ -52,9 +51,9 @@ public class FileController {
             Login login = new Login(userId, token);
             Login validLogin = memberService.logincheck(login);
             
-        	if(!ClamAVScanner.scanFile(file)) {
-        		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
-        	}
+//        	if(!ClamAVScanner.scanFile(file)) {
+//        		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
+//        	}
         	
             Files.createDirectories(Paths.get(UPLOAD_DIR));
             
@@ -81,7 +80,6 @@ public class FileController {
             fileService.uploadFile(f);
             
             Files.write(filePath, encryptedData);
-          
             Map<String, String> responseData = new HashMap<>();
             responseData.put("message", "파일 업로드 성공 (암호화됨): " + file.getOriginalFilename());
             responseData.put("token", validLogin.getToken());
@@ -132,93 +130,7 @@ public class FileController {
             return ResponseEntity.ok(response);
         } catch (Exception e) {
         	response.put("msg", "파일이 손상되었습니다.");
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
-        }
-    }
-    
-    @PostMapping("updateFile")
-    public ResponseEntity<?> updateFile(@RequestParam("file") MultipartFile file, @RequestParam("userId") String userId, @RequestParam("fileId") String fileId){
-    	
-    	try {
-    		
-    		Map<String, String> map = new HashMap<>();
-    		map.put("userId", userId);
-    		map.put("fileId", fileId);
-    		
-    		MyFile mf = fileService.downloadFile(map);
-    		
-    		if(mf == null) {
-    			return ResponseEntity.badRequest().body("파일이 손실되었습니다.");
-    		}
-    		if(!ClamAVScanner.scanFile(file)) {
-        		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
-        	}
-    		
-    		String fileName = file.getOriginalFilename();
-            byte[] security_key = OpenCrypt.getSHA256(fileName, UUID.randomUUID().toString());
-            
-            Security security = new Security();
-            
-            String encrypteName = security.encryptFileName(fileName, security_key);
-            
-            byte[] security_key2 = OpenCrypt.getSHA256(fileName, UUID.randomUUID().toString());
-            
-            // 파일 암호화 후 저장
-            byte[] encryptedData = security.encrypt(file.getBytes(), security_key2);
-            String securityDetail = OpenCrypt.computeSHA256(file.getBytes());
-            
-            File oldFile = new File(UPLOAD_DIR + mf.getSecurityName());
-            
-            System.out.println(mf.getSecurityName());
-            
-            if(oldFile.exists()) {
-            	try(FileOutputStream fos = new FileOutputStream(oldFile)){
-            		fos.write(encryptedData);
-            	}
-            }else {
-            	return ResponseEntity.badRequest().body("파일이 손실되었습니다.");
-            }
-            
-            Path source = Paths.get(UPLOAD_DIR + mf.getSecurityName());
-            Path target = Paths.get(UPLOAD_DIR + encrypteName);
-            Files.move(source, target);
-            
-            mf.setSecurity(security_key);
-            mf.setSecurity2(security_key2);
-            mf.setSecurityName(encrypteName);
-            mf.setSecurityDetail(securityDetail);
-            fileService.updateFile(mf);
-            
-            return ResponseEntity.ok("파일 업데이트 완료");
-    	}catch(Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("업데이트에 실패했습니다.");
-    	}
-    }
-    
-    @PostMapping("/deleteFile")
-    public ResponseEntity<String> deleteFile(@RequestBody Map<String, String> map){
-    	try {
-    		MyFile f = fileService.findFile(map);
-    		
-    		System.out.println(f.toString());
-    		
-			fileService.deleteFile(map);
-			
-			File file = new File(UPLOAD_DIR + f.getSecurityName());
-			
-			if(file.exists()) {
-				if(!file.delete()) {
-					return ResponseEntity.status(404).body("파일 삭제 실패");
-				}
-			}
-			
-			
-			return ResponseEntity.ok("성공적으로 삭제되었습니다.");
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return ResponseEntity.status(404).body("파일을 찾을 수 없습니다.");
-		}
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);         }
     }
     
     @PostMapping("/getFiles")
