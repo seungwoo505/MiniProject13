@@ -17,6 +17,11 @@
   	values(#{fileId}, #{shareId})
   </insert>
   
+  <delete id="deleteShareUser" parameterType="FileShare">
+  	delete from FileShareUser
+  	where fileId=#{fileId}
+  </delete>
+  
   <select id="selectShareURL" parameterType="String" resultType="FileShare">
     select *
     from FileShareURL
@@ -45,6 +50,4 @@
     FROM FileShareUser
     WHERE shareId = #{shareId}
   </select>
-
-  
 </mapper>

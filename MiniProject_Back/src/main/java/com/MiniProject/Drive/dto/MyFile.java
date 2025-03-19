@@ -7,7 +7,7 @@ public class MyFile {
 	private String FileId, userId, securityName, securityDetail;
 	private byte[] security, security2;
 	private Date uploadDate, updateDate;
-	
+
 	public MyFile() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -24,7 +24,7 @@ public class MyFile {
 		this.uploadDate = uploadDate;
 		this.updateDate = updateDate;
 	}
-	
+
 	public String getFileId() {
 		return FileId;
 	}
@@ -73,7 +73,7 @@ public class MyFile {
 	public void setUpdateDate(Date updateDate) {
 		this.updateDate = updateDate;
 	}
-	
+
 	@Override
 	public String toString() {
 		return "File [FileId=" + FileId + ", userId=" + userId + ", securityName=" + securityName + ", securityDetail="

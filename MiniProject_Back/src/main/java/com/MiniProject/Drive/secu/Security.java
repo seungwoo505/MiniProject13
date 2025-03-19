@@ -9,9 +9,9 @@ import javax.crypto.spec.SecretKeySpec;
 public class Security {
 	/**
 	 * AES 암호화 처리
-	 * 
+	 *
 	 * 파일 암호화
-	 * 
+	 *
 	 * 암호화 대상, 암호화 키
 	 */
     public byte[] encrypt(byte[] data, byte[] secretKey) throws Exception {
@@ -23,7 +23,7 @@ public class Security {
 
     /**
      * AES복호화 처리
-     * 
+     *
      * 파일 복호화
      *
      * 복호화 대상, 복호화할 키
@@ -34,15 +34,15 @@ public class Security {
         cipher.init(Cipher.DECRYPT_MODE, key);
         return cipher.doFinal(data);
     }
-    
+
     /**
      * AES 암호화 처리
-     * 
+     *
      * 파일 이름 암호화
-     * 
+     *
      * 파일 이름, 암호화 키
      */
-    
+
     public String encryptFileName(String fileName, byte[] secretKey) throws Exception {
         Cipher cipher = Cipher.getInstance("AES");
         SecretKey key = new SecretKeySpec(secretKey, "AES");
@@ -54,7 +54,7 @@ public class Security {
 
     /**
      * AES복호화 처리
-     * 
+     *
      * 파일 이름 복호화
      *
      * 복호화 대상, 복호화할 키

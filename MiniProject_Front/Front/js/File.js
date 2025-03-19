@@ -100,6 +100,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         { headers: { "Authorization": token } }
       );
       const result = response.data;
+      console.log(response);
       if (!result[0].token) {
         alert("세션이 만료되었거나 토큰이 유효하지 않습니다.");
         sessionStorage.removeItem("Authorization");
@@ -109,6 +110,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       }
       sessionStorage.setItem("Authorization", result[0].token);
       console.log("새로운 토큰 저장됨:", result[0].token);
+      console.log(result[0].fileId);
       if (!result[0].fileId) {
         renderFileList([]);
       }else{
@@ -139,9 +141,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("shareButton").addEventListener("click", () => {
     alert("공유하는 기능 구현 예정");
   });
+
   document.getElementById("generateLinkBtn").addEventListener("click", () => {
-    alert("링크 생성 기능 구현 예정");
+    const userId = sessionStorage.getItem("userId");
+    const fileId = document.getElementById("fileDetailModal").dataset.fileId;
+
+    const shareIds = document.getElementById('shareList').innerText.trim().split("삭제");
+
+    const shareUser = !shareIds.every(item => item === "");
+    
+    axios.post('http://localhost:8080/share/create', { userId, fileId, shareIds, shareUser})
+      .then(response => {
+        console.log(response.data);
+        alert(`공유 성공! : ${response.data}`);
+        loadShareList(fileId);
+      })
+      .catch(error => {
+        alert('공유에 실패했습니다.');
+        console.error('공유 실패:', error);
+      });
   });
+
 });
 
 // 파일 리스트 렌더링
@@ -209,6 +229,8 @@ function openFileDetailModal(file) {
   document.getElementById("detailFileDates").textContent =
     `업로드: ${formattedUploadDate} / 업데이트: ${formattedUpdateDate}`;
   document.getElementById("detailFileOwner").textContent = `소유자: ${file.userId}`;
+
+  loadShareList(file.fileId);
 }
 
 // 공유 파일 상세 모달 열기
@@ -228,6 +250,8 @@ function openShareFileDetailModal(file) {
   document.getElementById("shareDetailFileDates").textContent =
     `업로드: ${formattedUploadDate} / 업데이트: ${formattedUpdateDate}`;
   document.getElementById("shareDetailFileOwner").textContent = `소유자: ${file.userId}`;
+
+  shareFileId = file.fileId;
   
   // 공유 파일 전용 모달 닫기 버튼 이벤트 설정
   const closeBtn = document.querySelector(".close-share-file-detail");
@@ -242,3 +266,51 @@ function openShareFileDetailModal(file) {
     }
   });
 }
+
+function loadShareList(fileId) {
+  axios.post('http://localhost:8080/share/shareFile', {fileId})
+    .then(response => {
+      const shares = response.data;
+      const shareList = document.getElementById('shareList');
+      shareList.innerHTML = '';
+      shares.forEach(share => {
+        console.log(share);
+        const li = document.createElement('li');
+        li.className = 'list-group-item';
+        li.textContent = share;
+
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "삭제";
+        deleteBtn.className = "btn btn-danger btn-sm ms-2"; // Bootstrap 스타일 적용 가능
+        deleteBtn.addEventListener("click", () => {
+          shareList.removeChild(li); // 리스트에서 해당 요소 삭제
+        });
+        li.appendChild(deleteBtn);
+        shareList.appendChild(li);
+      });
+    })
+    .catch(error => {
+      console.error('공유 대상 목록 로드 실패:', error);
+    });
+}
+
+document.getElementById("shareTarget").addEventListener("keydown", (e) => {
+  if(e.key === "Enter"){
+    const shareId = e.target.value; 
+
+    const shareList = document.getElementById('shareList');
+    const li = document.createElement('li');
+    li.className = 'list-group-item';
+    li.textContent = shareId;
+
+    const deleteBtn = document.createElement("button");
+    deleteBtn.textContent = "삭제";
+    deleteBtn.className = "btn btn-danger btn-sm ms-2"; // Bootstrap 스타일 적용 가능
+    deleteBtn.addEventListener("click", () => {
+      shareList.removeChild(li); // 리스트에서 해당 요소 삭제
+    });
+    li.appendChild(deleteBtn);
+    shareList.appendChild(li);
+    e.target.value = "";
+  }
+});

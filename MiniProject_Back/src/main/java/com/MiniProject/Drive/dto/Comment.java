@@ -6,7 +6,7 @@ public class Comment {
 	private int id, fileId;
 	private String writer, comment;
 	private Date createDate;
-	
+
 	public Comment() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -19,7 +19,7 @@ public class Comment {
 		this.comment = comment;
 		this.createDate = createDate;
 	}
-	
+
 	public int getId() {
 		return id;
 	}
