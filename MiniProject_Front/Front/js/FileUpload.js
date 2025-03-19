@@ -22,12 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
   
-  
-  async function downloadFile() {
-    // 파일 다운로드 로직
-    alert("파일 다운로드 기능 구현 예정");
-  }
-  
 const BASE_URL = "http://localhost:8080";
 
 async function uploadFile() {

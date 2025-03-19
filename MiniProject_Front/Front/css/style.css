@@ -204,7 +204,8 @@ header {
 
 /* 닫기 버튼 (모달 내) */
 .close-upload, 
-.close-file-detail {
+.close-file-detail,
+.close-share-file-detail {
   color: #aaa;
   font-size: 28px;
   font-weight: bold;
@@ -263,6 +264,10 @@ header {
   margin-top: 10px;
   font-weight: bold;
 }
+
+#detailFileDates {
+  margin-top: 5px;
+}
 #downloadFileBtn {
   margin: 10px 0;
 }
@@ -296,3 +301,54 @@ cursor: pointer;
 .fileDetailButton:hover {
   background-color: #2f6ad9;
 }
+
+/* 공유 파일 전용 모달 - 파일 정보 영역 */
+#shareDetailFileName {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#shareDetailFileDates {
+  margin-top: 5px;
+  font-size: 16px;
+}
+
+#shareDetailFileOwner {
+  margin-top: 10px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* 공유 파일 전용 모달 - 버튼 스타일 */
+#downloadFileBtnShare,
+#generateLinkBtnShare {
+  background-color: #4285f4;
+  padding: 10px;
+  color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px 5px 0 0;
+}
+
+#downloadFileBtnShare:hover,
+#generateLinkBtnShare:hover {
+  background-color: #2f6ad9;
+}
+
+/* 공유 파일 전용 모달 전체 레이아웃 (예시) */
+#shareFileDetailModal .modal-content {
+  padding: 20px;
+  width: 600px; /* 필요에 따라 조정 */
+  margin: 100px auto;
+  border-radius: 8px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px; /* 필요에 따라 조정 */
+}
+
+

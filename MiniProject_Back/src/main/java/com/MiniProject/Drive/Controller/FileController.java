@@ -52,9 +52,9 @@ public class FileController {
             //Login login = new Login(userId, token);
             //Login validLogin = memberService.logincheck(login);
             
-        	if(!ClamAVScanner.scanFile(file)) {
-        		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
-        	}
+//        	if(!ClamAVScanner.scanFile(file)) {
+//        		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
+//        	}
         	
             Files.createDirectories(Paths.get(UPLOAD_DIR));
             
@@ -81,7 +81,7 @@ public class FileController {
             fileService.uploadFile(f);
             
             Files.write(filePath, encryptedData);
-            
+          
             Map<String, String> responseData = new HashMap<>();
             responseData.put("message", "파일 업로드 성공 (암호화됨): " + file.getOriginalFilename());
             //responseData.put("token", validLogin.getToken());
@@ -94,11 +94,15 @@ public class FileController {
 
     // 파일 다운로드 (복호화 후 전송)
     @PostMapping("/download")
-    public ResponseEntity<Map<String, Object>> downloadFile(@RequestBody Map<String, String> map) {
+    public ResponseEntity<Map<String, Object>> downloadFile(@RequestBody Map<String, String> map,@RequestHeader("Authorization") String token) {
     	Map<String, Object> response = new HashMap<>();
     	
     	try {
-        	MyFile f = fileService.downloadFile(map);
+    		String userId = map.get("userId");
+            Login login = new Login(userId, token);
+            Login validLogin = memberService.logincheck(login);
+    		
+        	File f = fileService.downloadFile(map);
         	
         	if (f == null) {
         		response.put("msg", "파일을 찾을 수 없습니다.");
@@ -123,6 +127,7 @@ public class FileController {
             
             response.put("fileName", originalFileName);  // 파일명
             response.put("file", decryptedData);
+            response.put("token", validLogin.getToken());
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
@@ -217,9 +222,29 @@ public class FileController {
     }
     
     @PostMapping("/getFiles")
-    public ResponseEntity<Map<String, Object>[]> getFiles(@RequestBody Map<String, String> map) {
+    public ResponseEntity<Map<String, Object>[]> getFiles(@RequestBody Map<String, String> map, @RequestHeader("Authorization") String token) {
     	MyFile[] files;
     	
+        String userId = map.get("userId");
+        Login login = new Login(userId, token);
+        Login validLogin = null;
+        try {
+            validLogin = memberService.logincheck(login);
+            if (validLogin == null) {
+                Map<String, Object>[] emptyResponse = new Map[1];
+                emptyResponse[0] = new HashMap<>();
+                emptyResponse[0].put("token", null);
+                return ResponseEntity.ok(emptyResponse);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Map<String, Object>[] emptyResponse = new Map[1];
+            emptyResponse[0] = new HashMap<>();
+            emptyResponse[0].put("token", null);
+            return ResponseEntity.ok(emptyResponse);
+        }
+        
+        
 		try {
 			files = fileService.selectFile(map);
 		} catch (Exception e) {
@@ -228,6 +253,14 @@ public class FileController {
 			return null;
 		}
 		
+		
+	    if (files.length == 0) {
+	        Map<String, Object>[] emptyResponse = new Map[1];
+	        emptyResponse[0] = new HashMap<>();
+	        emptyResponse[0].put("token", validLogin.getToken());
+	        return ResponseEntity.ok(emptyResponse);
+	    }
+
 		Map<String, Object>[] response = new Map[files.length];
 		
 		for(int i = 0; i < response.length; i++) {
@@ -251,6 +284,10 @@ public class FileController {
 			}
     	}
     	
+        if (validLogin != null) {
+            response[0].put("token", validLogin.getToken());
+        }
+
     	return ResponseEntity.ok(response);
     }
     

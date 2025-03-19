@@ -1,5 +1,6 @@
 package com.MiniProject.Drive.dao;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
@@ -28,4 +29,5 @@ public interface FileDao {
 	
 	public Comment[] selectComment(Comment comment) throws Exception;
 	
+	public List<File> selectFilesByIds(List<String> fileIds) throws Exception;
 }

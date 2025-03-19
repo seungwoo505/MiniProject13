@@ -1,5 +1,6 @@
 package com.MiniProject.Drive.service;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class FileService {
 	public MyFile findFile(Map<String, String> map) throws Exception{
 		return fileDao.findFile(map);
 	}
-	
+
 	public void insertComment(Comment comment) throws Exception{
 		fileDao.insertComment(comment);
 	}
@@ -49,4 +50,8 @@ public class FileService {
 	public Comment[] selectComment(Comment comment) throws Exception{
 		return fileDao.selectComment(comment);
 	}
+  
+  public List<File> getFilesByIds(List<String> fileIds) throws Exception {
+    return fileDao.selectFilesByIds(fileIds);
+  }
 }

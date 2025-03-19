@@ -1,6 +1,8 @@
 package com.MiniProject.Drive.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -20,6 +22,7 @@ public class FileShareService {
 	
 	@Autowired
 	FileDao fileDao;
+	
 	
 	public String createShareURL(FileShare fs) throws Exception{
 		String token = UUID.randomUUID().toString();
@@ -56,4 +59,8 @@ public class FileShareService {
 	public FileShare[] selectShareFile(FileShare fs) throws Exception{
 		return fileShareDao.selectShareFile(fs);
 	}
+    
+    public List<String> getFileIdsByUserId(String userId) throws Exception {
+        return fileShareDao.selectFileIdsByUserId(userId);
+    }
 }

@@ -74,8 +74,8 @@ public class MemberService {
 		return null;		 
 	}
     
-	public void logout(String userId, String authorization) throws Exception {
-	    int affectedRows = loginDao.deleteToken(userId, authorization);
+	public void logout(String userId) throws Exception {
+	    int affectedRows = loginDao.deleteToken(userId);
 	    if (affectedRows == 0) {
 	        throw new Exception("토큰이 존재하지 않습니다.");
 	    }
@@ -96,23 +96,18 @@ public class MemberService {
 	
 	
 	public Login logincheck(Login login) throws Exception {
-	    // DB에서 30분 이내의 유효한 토큰 정보 조회
 	    Login Login = loginDao.logincheck(login);
 	    
-	    // 유효한 토큰 정보가 없으면, 토큰이 만료된 것으로 간주
 	    if (Login == null) {
-	        // 만료 토큰 삭제 (추가로 처리할 필요가 있다면)
-	        loginDao.deleteToken(login.getUserId(), login.getToken());
+	        loginDao.deleteToken(login.getUserId());
 	        throw new Exception("토큰이 만료되었습니다.");
 	    }
 	    
-	    // 유효한 토큰이 존재하면, 새로운 토큰 생성 후 갱신
 	    String userId = login.getUserId();
 	    String salt = UUID.randomUUID().toString();
 	    byte[] originalHash = OpenCrypt.getSHA256(userId, salt);
 	    String newToken = OpenCrypt.byteArrayToHex(originalHash);
 	    
-	    // 새 토큰 정보 생성: logintime은 insertToken 구문에서 CURRENT_TIMESTAMP로 갱신됨
 	    Login newLogin = new Login(userId, newToken);
 	    loginDao.insertToken(newLogin);
 	    

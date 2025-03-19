@@ -61,27 +61,54 @@
       
       <div class="Filedetail-div">
         <h2 id="detailFileName"></h2>
+        <p id="detailFileDates"></p>
         <p id="detailFileOwner"></p>
-      <button class="fileDetailButton" id="downloadFileBtn"><i class="fa-solid fa-download"></i> 다운로드</button>
+      <button class="fileDetailButton" id="downloadFileBtn" onclick="downloadFile()"><i class="fa-solid fa-download"></i> 다운로드</button>
       </div>
 
-      <div class="share-div">
+      <div class="share-div" id="shar-div">
         <h2 class="share-target-text">공유 대상</h2>
         <input type="text" id="shareTarget" placeholder="공유 대상 (공유할 대상 ID)" />
       </div>
 
-      <div class="share-btn">
+      <div class="share-btn-div" id="share-btn-div">
         <button class="fileDetailButton" id="shareButton"><i class="fa-solid fa-share-nodes"></i> 공유</button>
         <button class="fileDetailButton" id="generateLinkBtn"><i class="fa-solid fa-link"></i> 링크 생성</button>
       </div>
     </div>
   </div>
-  
+
+<!-- 공유 파일 전용 모달 -->
+<div id="shareFileDetailModal" class="modal">
+  <div class="modal-content">
+    <div class="close-div">
+      <span class="close-share-file-detail">&times;</span>
+    </div>
+    
+    <div class="Filedetail-div">
+      <h2 id="shareDetailFileName"></h2>
+      <p id="shareDetailFileDates"></p>
+      <p id="shareDetailFileOwner"></p>
+      
+      <div class="button-container">
+        <button class="fileDetailButton" id="downloadFileBtnShare" onclick="downloadFile()"">
+          <i class="fa-solid fa-download"></i> 다운로드
+        </button>
+        <button class="fileDetailButton" id="generateLinkBtnShare">
+          <i class="fa-solid fa-link"></i> 링크 생성
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
   <link rel="stylesheet" href="/css/style.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
   <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-  <script src="/js/index.js"></script>
+  <script src="/js/FileDownload.js"></script>
   <script src="/js/FileUpload.js"></script>
   <script src="/js/File.js"></script>
+  <script src="/js/index.js"></script>
 </body>
 </html>
