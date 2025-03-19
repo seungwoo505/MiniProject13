@@ -5,13 +5,13 @@
   
 <mapper namespace="com.MiniProject.Drive.dao.FileDao">
   
-  <insert id="uploadFile" parameterType="File">
+  <insert id="uploadFile" parameterType="MyFile">
     insert into
     File(userId, security, security2, securityName, securityDetail)
     values(#{userId}, #{security}, #{security2}, #{securityName}, #{securityDetail})
   </insert>
   
-  <select id="downloadFile" parameterType="java.util.Map" resultType="File">
+  <select id="downloadFile" parameterType="java.util.Map" resultType="MyFile">
     select *
     from File
     where 1=1
@@ -19,17 +19,52 @@
     and userId = #{userId}
   </select>
   
-  <select id="selectFile" parameterType="java.util.Map" resultType="File">
+  <update id="updateFile" parameterType="MyFile">
+  	update File
+  	set security=#{security}
+  	  , security2=#{security2}
+  	  , securityName=#{securityName}
+  	  , securityDetail=#{securityDetail}
+  	where fileId=#{fileId}
+  </update>
+  
+  <delete id="deleteFile" parameterType="java.util.Map">
+  	delete from File
+  	where 1=1
+  	and fileId = #{fileId}
+  	and userId = #{userId}
+  </delete>
+  
+  <select id="selectFile" parameterType="java.util.Map" resultType="MyFile">
   	select fileId, userId, security, securityName, uploadDate, updateDate
   	from File
   	where 1=1
   	and userId = #{userId}
   </select>
   
-  <select id="findFile" parameterType="java.util.Map" resultType="File">
+  <select id="findFile" parameterType="java.util.Map" resultType="MyFile">
   	select fileId, userId, security, securityName, uploadDate, updateDate
   	from File
   	where 1=1
   	and fileId = #{fileId}
+  </select>
+  
+  <insert id="insertComment" parameterType="Comment">
+  	insert into
+  	Comment(fileId, writer, comment)
+  	values(#{fileId}, #{writer}, #{comment})
+  </insert>
+  
+  <delete id="deleteComment" parameterType="Comment">
+  	delete from Comment
+  	where 1=1
+  	and id = #{id}
+  </delete>
+  
+  <select id="selectComment" parameterType="Comment" resultType="Comment">
+  	select *
+  	from Comment
+  	where 1=1
+  	and fileId=#{fileId}
   </select>
 </mapper>

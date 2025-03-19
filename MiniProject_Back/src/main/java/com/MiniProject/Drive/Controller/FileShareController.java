@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.MiniProject.Drive.dto.File;
+import com.MiniProject.Drive.dto.MyFile;
 import com.MiniProject.Drive.dto.FileShare;
 import com.MiniProject.Drive.secu.Security;
 import com.MiniProject.Drive.service.FileService;
@@ -132,13 +132,17 @@ public class FileShareController {
 	@PostMapping("/download")
 	public ResponseEntity<Map<String, Object>> downloadShareURL(@RequestBody Map<String, String> map){
 		try {
-			FileShare fs = fileShareService.selectShareURL(map.get("token"));
+			FileShare fs = null;
+			if(map.get("token") != null) {
+				fs = fileShareService.selectShareURL(map.get("token"));
+			}
 			
-			if(fs == null) {
+			if(fs == null && map.get("shareUser").equals(0)) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 			}
 			
-			if(fs.isShareUser()) {
+			if(fs.isShareUser() || map.get("shareUser").equals(1)) {
+				fs = new FileShare();
 				fs.setShareId(map.get("shareId"));
 				FileShare fs2 = fileShareService.selectShareUser(fs);
 				
@@ -146,10 +150,11 @@ public class FileShareController {
 					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 				}
 			}
+			
 			map.put("fileId", fs.getFileId());
 			map.put("userId", fs.getUserId());
 			
-        	File f = fileService.downloadFile(map);
+			MyFile f = fileService.downloadFile(map);
         	
         	if (f == null) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null); // 파일을 찾을 수 없으면 404

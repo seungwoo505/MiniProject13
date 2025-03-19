@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>파일 미리보기 테스트</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    #previewContainer {
+      margin-top: 20px;
+    }
+    #previewImage {
+      max-width: 100%;
+      height: auto;
+      display: none;
+    }
+    #textPreview {
+      white-space: pre-wrap;
+      background: #f8f9fa;
+      padding: 15px;
+      border: 1px solid #dee2e6;
+      border-radius: 4px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="container mt-4">
+    <h1>파일 미리보기 테스트</h1>
+    <div class="form-group">
+      <label for="fileId">파일 번호 입력:</label>
+      <input type="text" id="fileId" class="form-control" placeholder="파일 번호를 입력하세요.">
+    </div>
+    <div class="form-group">
+      <label for="previewType">미리보기 유형:</label>
+      <select id="previewType" class="form-control">
+        <option value="img">이미지</option>
+        <option value="text">텍스트</option>
+      </select>
+    </div>
+    <button id="loadPreviewBtn" class="btn btn-primary">미리보기 로드</button>
+    
+    <div id="previewContainer">
+      <img id="previewImage" src="" alt="파일 미리보기">
+      <div id="textPreview"></div>
+    </div>
+  </div>
+  
+  <!-- axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    function base64ToBlob(base64, mimeType) {
+      const byteCharacters = atob(base64);
+      const byteNumbers = new Array(byteCharacters.length);
+      for (let i = 0; i < byteCharacters.length; i++) {
+        byteNumbers[i] = byteCharacters.charCodeAt(i);
+      }
+      const byteArray = new Uint8Array(byteNumbers);
+      return new Blob([byteArray], { type: mimeType });
+    }
+
+    document.getElementById('loadPreviewBtn').addEventListener('click', () => {
+      const fileId = document.getElementById('fileId').value.trim();
+      const previewType = document.getElementById('previewType').value;
+      
+      if (!fileId) {
+        alert("파일 번호를 입력하세요.");
+        return;
+      }
+      
+      // API 엔드포인트 URL 구성 (예시: /api/files/{fileId}/preview?type=img 또는 type=text)
+      const url = `http://localhost:8080/preview`;
+
+      const data = {
+        fileId : fileId,
+        userId : "이승우",
+        type : previewType
+      };
+      
+      if (previewType === 'img') {
+        // 이미지 미리보기: 응답 데이터가 JSON 배열(숫자 배열, 즉 byte[])로 전달된다고 가정
+        axios.post(url, data)
+          .then(response => {
+            const data = response.data;
+            // data.file가 base64 문자열이어야 함
+            if (typeof data.file === 'string') {
+              // MIME 타입은 실제 파일 형식에 맞게 설정 (여기서는 image/jpeg로 가정)
+              const blob = base64ToBlob(data.file, "image/jpeg");
+              const imageUrl = URL.createObjectURL(blob);
+              const previewImage = document.getElementById('previewImage');
+              previewImage.src = imageUrl;
+              previewImage.style.display = "block";
+              document.getElementById('textPreview').style.display = "none";
+            } else {
+              throw new Error("응답 데이터 형식이 올바르지 않습니다.");
+            }
+          })
+          .catch(error => {
+            console.error("이미지 미리보기 오류:", error);
+            alert("이미지 미리보기를 가져오는 중 오류가 발생했습니다.");
+          });
+      } else if (previewType === 'text') {
+        // 텍스트 미리보기: 응답 데이터가 문자열로 전달된다고 가정
+        axios.post(url, data)
+          .then(response => {
+            const text = response.data.file;
+            const textPreview = document.getElementById('textPreview');
+            textPreview.textContent = text;
+            textPreview.style.display = "block";
+            document.getElementById('previewImage').style.display = "none";
+          })
+          .catch(error => {
+            console.error("텍스트 미리보기 오류:", error);
+            alert("텍스트 미리보기를 가져오는 중 오류가 발생했습니다.");
+          });
+      }
+    });
+  </script>
+</body>
+</html>

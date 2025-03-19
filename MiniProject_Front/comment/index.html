@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>파일 댓글</title>
+  <!-- 부트스트랩 CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <!-- axios CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+</head>
+<body>
+  <div class="container mt-4">
+    <h1>파일 댓글</h1>
+    <!-- 파일 ID는 실제 파일의 ID로 대체 -->
+    <input type="hidden" id="fileId" value="1">
+    
+    <!-- 댓글 목록 영역 -->
+    <div id="commentList"></div>
+    
+    <!-- 댓글 작성 폼 -->
+    <div class="mt-3">
+      <textarea id="commentContent" class="form-control" placeholder="댓글을 입력하세요." rows="3"></textarea>
+      <button id="addCommentBtn" class="btn btn-primary mt-2">댓글 추가</button>
+    </div>
+  </div>
+
+  <script>
+    const fileId = document.getElementById('fileId').value;
+    
+    // 댓글 목록 로드
+    function loadComments() {
+      axios.post(`http://localhost:8080/selectComment`, {fileId})
+        .then(response => {
+          const comments = response.data;
+          const commentList = document.getElementById('commentList');
+          commentList.innerHTML = '';
+          comments.forEach(comment => {
+            // 각 댓글을 div로 생성
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'border p-2 mb-2';
+            commentDiv.innerHTML = `
+              <p>${comment.comment}</p>
+              <small>작성자: ${comment.writer} / 작성일: ${new Date(comment.createDate).toLocaleString()}</small>
+              <br>
+              <button class="btn btn-sm btn-danger" onclick="deleteComment(${comment.id})">삭제</button>
+            `;
+            commentList.appendChild(commentDiv);
+          });
+        })
+        .catch(error => console.error(error));
+    }
+    
+    // 댓글 추가
+    document.getElementById('addCommentBtn').addEventListener('click', () => {
+      const content = document.getElementById('commentContent').value;
+      if (!content.trim()) {
+        alert('댓글 내용을 입력하세요.');
+        return;
+      }
+      axios.post(`http://localhost:8080/insertComment`, { fileId, writer : "이승우" , comment : content })
+        .then(response => {
+          document.getElementById('commentContent').value = '';
+          loadComments();
+        })
+        .catch(error => console.error(error));
+    });
+    
+    // 댓글 삭제
+    function deleteComment(commentId) {
+      axios.post("http://localhost:8080/deleteComment", {id : commentId})
+        .then(response => {
+          loadComments();
+        })
+        .catch(error => console.error(error));
+    }
+    
+    // 페이지 로드 시 댓글 목록 불러오기
+    loadComments();
+  </script>
+</body>
+</html>

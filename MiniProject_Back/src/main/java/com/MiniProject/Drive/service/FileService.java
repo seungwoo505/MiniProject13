@@ -6,26 +6,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.MiniProject.Drive.dao.FileDao;
-import com.MiniProject.Drive.dto.File;
+import com.MiniProject.Drive.dto.Comment;
+import com.MiniProject.Drive.dto.MyFile;
 
 @Service
 public class FileService {
 	@Autowired
 	FileDao fileDao;
 	
-	public void uploadFile(File f) throws Exception{
+	public void uploadFile(MyFile f) throws Exception{
 		fileDao.uploadFile(f);
 	}
 	
-	public File downloadFile(Map<String, String> map) throws Exception{
+	public MyFile downloadFile(Map<String, String> map) throws Exception{
 		return fileDao.downloadFile(map);
 	}
 	
-	public File[] selectFile(Map<String, String> map) throws Exception{
+	public void deleteFile(Map<String, String> map) throws Exception{
+		fileDao.deleteFile(map);
+	}
+	
+	public void updateFile(MyFile f) throws Exception{
+		fileDao.updateFile(f);
+	}
+	
+	public MyFile[] selectFile(Map<String, String> map) throws Exception{
 		return fileDao.selectFile(map);
 	}
 	
-	public File findFile(Map<String, String> map) throws Exception{
+	public MyFile findFile(Map<String, String> map) throws Exception{
 		return fileDao.findFile(map);
+	}
+	
+	public void insertComment(Comment comment) throws Exception{
+		fileDao.insertComment(comment);
+	}
+	
+	public void deleteComment(Comment comment) throws Exception{
+		fileDao.deleteComment(comment);
+	}
+	
+	public Comment[] selectComment(Comment comment) throws Exception{
+		return fileDao.selectComment(comment);
 	}
 }
