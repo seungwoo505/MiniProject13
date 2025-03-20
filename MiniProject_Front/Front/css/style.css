@@ -225,7 +225,11 @@ header {
   margin-bottom: 25px;
 }
 
-
+#share-btn-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 /* 파일 업로드/다운로드 폼 */
 .file-container {
@@ -287,6 +291,15 @@ header {
 #generateLinkBtn {
   float: right;
 }
+
+.btn-primary.mt-2 {
+  background-color: #4285f4 !important;
+}
+
+.btn-primary.mt-2:hover{
+  background-color: #2f6ad9 !important;
+}
+
 
 .fileDetailButton {
 background-color: #4285f4;

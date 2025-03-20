@@ -190,6 +190,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       const message = response.data.message;
       alert(shareUrl);
       loadShareList(fileId);
+      shareListChanged = false;
     })
     .catch(error => {
       alert('공유에 실패했습니다.');
