@@ -9,7 +9,6 @@ public class Comment {
 
 	public Comment() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public Comment(int id, int fileId, String writer, String comment, Date createDate) {
 		super();

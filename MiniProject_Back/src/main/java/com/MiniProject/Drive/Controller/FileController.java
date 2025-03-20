@@ -169,8 +169,6 @@ public class FileController {
             
             File oldFile = new File(UPLOAD_DIR + mf.getSecurityName());
             
-            System.out.println(mf.getSecurityName());
-            
             if(oldFile.exists()) {
             	try(FileOutputStream fos = new FileOutputStream(oldFile)){
             		fos.write(encryptedData);
@@ -204,8 +202,6 @@ public class FileController {
             Login validLogin = memberService.logincheck(login);
             
     		MyFile f = fileService.findFile(map);
-    		
-    		System.out.println(f.toString());
     		
 			fileService.deleteFile(map);
 			
@@ -252,7 +248,6 @@ public class FileController {
             return ResponseEntity.ok(emptyResponse);
         }
         
-        
 		try {
 			files = fileService.selectFile(map);
 		} catch (Exception e) {
@@ -260,8 +255,7 @@ public class FileController {
 			e.printStackTrace();
 			return null;
 		}
-		
-		
+
 	    if (files.length == 0) {
 	        Map<String, Object>[] emptyResponse = new Map[1];
 	        emptyResponse[0] = new HashMap<>();

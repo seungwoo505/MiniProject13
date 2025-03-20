@@ -10,7 +10,6 @@ public class FileShare {
 
 	public FileShare() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public FileShare(String userId, String token, String fileId, String fileName, String shareId, String[] shareIds, boolean shareUser,

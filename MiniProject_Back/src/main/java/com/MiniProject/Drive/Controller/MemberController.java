@@ -50,7 +50,6 @@ public class MemberController {
 				responseMap.put("msg", "다시 로그인 해주세요");
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 			responseMap.put("msg", e.getMessage());
 		}
@@ -59,7 +58,7 @@ public class MemberController {
 
 
 	@PostMapping("logout")
-	public String logout(@RequestHeader String authorization, @RequestBody Map<String, String> requestBody ) {
+	public String logout(@RequestHeader String authorization, @RequestBody Map<String, String> requestBody) {
 		String userId = requestBody.get("userId");
 	    try {
 	        memberService.logout(userId);

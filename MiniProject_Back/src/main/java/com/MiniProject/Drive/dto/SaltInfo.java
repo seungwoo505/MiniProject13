@@ -22,7 +22,6 @@ public class SaltInfo {
 
 	public SaltInfo() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public SaltInfo(String userId, String salt) {

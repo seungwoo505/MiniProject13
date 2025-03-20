@@ -2,6 +2,16 @@ package com.MiniProject.Drive.dto;
 
 public class Login {
 	private String userId, token;
+	
+	public Login() {
+		super();
+	}
+
+	public Login(String userId, String token) {
+		super();
+		this.userId = userId;
+		this.token = token;
+	}
 
 	public String getUserId() {
 		return userId;
@@ -16,17 +26,6 @@ public class Login {
 	}
 
 	public void setToken(String token) {
-		this.token = token;
-	}
-
-	public Login() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
-	public Login(String userId, String token) {
-		super();
-		this.userId = userId;
 		this.token = token;
 	}
 
