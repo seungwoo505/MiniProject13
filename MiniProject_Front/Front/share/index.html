@@ -80,7 +80,7 @@
         async function downloadFile() {
             const shareId = sessionStorage.getItem("userId");
             const token = window.location.search.split('=').pop();
-            const response = await axios.post(`http://localhost:8080/share/download`, {token, shareId : shareId, shareUser : !(shareId === null)});
+            const response = await axios.post(`http://localhost:8080/share/download`, {token, shareId : shareId, shareUser : !(shareId === null)}, { headers: { "Authorization": sessionStorage.getItem("Authorization") }});
 
             if (response.status === 200) {
                 const { fileName, file } = response.data;

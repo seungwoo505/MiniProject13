@@ -154,6 +154,8 @@ public class FileShareController {
 			FileShare fs = new FileShare();
 			if(map.get("token") != null) {
 				fs = fileShareService.selectShareURL(map.get("token"));
+				map.put("fileId", fs.getFileId());
+				map.put("userId", fs.getUserId());
 			}
 
 			if(fs == null && map.get("shareUser").equals(0)) {
@@ -175,8 +177,8 @@ public class FileShareController {
 				}
 			}
 
-			map.put("fileId", fs.getFileId());
-			map.put("userId", fs.getUserId());
+			//map.put("fileId", fs.getFileId());
+			//map.put("userId", fs.getUserId());
 
 			MyFile f = fileService.downloadFile(map);
 
