@@ -52,7 +52,7 @@ public class MemberController {
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			responseMap.put("msg", "다시 로그인 해주세요");
+			responseMap.put("msg", e.getMessage());
 		}
 		return responseMap;
 	}

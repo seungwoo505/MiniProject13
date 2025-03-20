@@ -196,8 +196,13 @@ public class FileController {
     }
     
     @PostMapping("/deleteFile")
-    public ResponseEntity<String> deleteFile(@RequestBody Map<String, String> map){
+    public ResponseEntity<Map<String, String>> deleteFile(@RequestBody Map<String, String> map, @RequestHeader("Authorization") String token){
+    	Map<String, String> response = new HashMap<>();
     	try {
+            String userId = map.get("userId");
+            Login login = new Login(userId, token);
+            Login validLogin = memberService.logincheck(login);
+            
     		MyFile f = fileService.findFile(map);
     		
     		System.out.println(f.toString());
@@ -208,16 +213,19 @@ public class FileController {
 			
 			if(file.exists()) {
 				if(!file.delete()) {
-					return ResponseEntity.status(404).body("파일 삭제 실패");
+		            response.put("message", "파일 삭제 실패");
+		            return ResponseEntity.status(404).body(response);
 				}
 			}
 			
-			
-			return ResponseEntity.ok("성공적으로 삭제되었습니다.");
+	        response.put("message", "성공적으로 삭제되었습니다.");
+	        response.put("token", validLogin.getToken());
+	        return ResponseEntity.ok(response);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return ResponseEntity.status(404).body("파일을 찾을 수 없습니다.");
+	        response.put("message", "파일을 찾을 수 없습니다.");
+	        return ResponseEntity.status(404).body(response);
 		}
     }
     
@@ -357,6 +365,7 @@ public class FileController {
             return ResponseEntity.status(408).body(response);
 		}
     }
+    
     
     @PostMapping("/deleteComment")
     public ResponseEntity<Map<String, String>> deleteComment(@RequestBody Comment comment, @RequestHeader("Authorization") String token){

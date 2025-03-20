@@ -14,5 +14,30 @@
 	    select * from user where userId=#{userId} and pwd=#{pwd}
 	 </select>
 	 
- 
+    <select id="getLoginCount" resultType="int" parameterType="string">
+        SELECT login_count FROM user WHERE userId = #{userId}
+    </select>
+    
+    <update id="incrementLoginCount" parameterType="string">
+        UPDATE user
+        SET login_count = login_count + 1,
+            login_date = CURRENT_TIMESTAMP()
+        WHERE userId = #{userId}
+    </update>
+    
+    <update id="resetLoginCount" parameterType="string">
+        UPDATE user
+        SET login_count = 0,
+            login_date = NULL
+        WHERE userId = #{userId}
+    </update>
+    
+    <select id="isTimePassed" resultType="boolean" parameterType="string">
+        SELECT IF(login_date IS NOT NULL 
+             AND TIMESTAMPDIFF(SECOND, login_date, CURRENT_TIMESTAMP()) >= 30, 
+             true, false)
+        FROM user
+        WHERE userId = #{userId}
+    </select>
+    
 </mapper>
