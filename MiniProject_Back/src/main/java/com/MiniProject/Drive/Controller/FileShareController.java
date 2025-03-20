@@ -45,19 +45,29 @@ public class FileShareController {
 	MemberService memberService;
 
 	@PostMapping("/create")
-	public ResponseEntity<String> createShareURL(@RequestBody FileShare fs){
+	public ResponseEntity<Map<String, String>> createShareURL(@RequestBody FileShare fs, @RequestHeader("Authorization") String token){
+		Map<String, String> response = new HashMap<>();
 		try {
+			String userId = fs.getUserId();
+			Login login = new Login(userId, token);
+            Login validLogin = memberService.logincheck(login);
+			
 			String shareUrl = fileShareService.createShareURL(fs);
 
 			if(fs.isShareUser()) {
 				fileShareService.createShareUser(fs);
 			}
-
-			return ResponseEntity.ok(shareUrl);
+			
+	        response.put("shareUrl", shareUrl);
+	        response.put("token", validLogin.getToken());
+	        response.put("message", "공유 URL 생성에 성공하였습니다.");
+	        
+	        return ResponseEntity.ok(response);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return ResponseEntity.status(HttpStatus.NOT_FOUND).body("공유를 생성하지못습니다.");
+	        response.put("message", "공유를 생성하지 못했습니다.");
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
 		}
 	}
 
@@ -139,7 +149,7 @@ public class FileShareController {
 	}
 
 	@PostMapping("/download")
-	public ResponseEntity<Map<String, Object>> downloadShareURL(@RequestBody Map<String, String> map){
+	public ResponseEntity<Map<String, Object>> downloadShareURL(@RequestBody Map<String, String> map, @RequestHeader(value = "Authorization", required = false)String token){
 		try {
 			FileShare fs = new FileShare();
 			if(map.get("token") != null) {
@@ -151,11 +161,8 @@ public class FileShareController {
 			}
 			
 			boolean shareUser = map.get("shareUser").toString().equals("true");
-			
-			System.out.println(shareUser);
 
 			if(fs.isShareUser() || shareUser) {
-				System.out.println("안에도 수행");
 				fs = new FileShare();
 				fs.setShareId(map.get("shareId"));
 				fs.setShareUser(true);
@@ -191,6 +198,16 @@ public class FileShareController {
 
             response.put("fileName", originalFileName);  // 파일명
             response.put("file", decryptedData);
+            
+            if (fs.isShareUser() || shareUser) {
+                if (token == null || token.trim().isEmpty()) {
+                    return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(null);
+                }
+                
+                Login login = new Login(fs.getShareId(), token);
+                Login validLogin = memberService.logincheck(login);
+                response.put("token", validLogin.getToken());
+            }
 
             return ResponseEntity.ok(response);
         } catch (Exception e) {
