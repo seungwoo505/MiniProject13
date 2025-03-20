@@ -26,9 +26,29 @@ public class MemberService {
 	@Autowired
 	SaltDao saltDao;
 
-	public Member login(Member m) throws Exception {
-		return memberDao.login(m);
-	}
+    public Member login(Member m) throws Exception {
+        String userId = m.getUserId();
+        
+        int count = memberDao.getLoginCount(userId);
+        
+        if (count >= 5) {
+            boolean TimePassed = memberDao.isTimePassed(userId);
+            if (!TimePassed) {
+                throw new Exception("로그인 실패가 5회 발생하여 30초가 지나지 않아 로그인할 수 없습니다.");
+            } else {
+                memberDao.resetLoginCount(userId);
+            }
+        }
+        
+        Member member = memberDao.login(m);
+        if (member != null) {
+            memberDao.resetLoginCount(userId);
+            return member;
+        } else {
+            memberDao.incrementLoginCount(userId);
+            throw new Exception("로그인 정보가 올바르지 않습니다.");
+        }
+    }
 
 	public void signup(Member m) throws Exception {
 	    String userId = m.getUserId();
@@ -64,9 +84,10 @@ public class MemberService {
 		byte [] pwdHash=OpenCrypt.getSHA256(pwd, saltInfo.getSalt());
 		String pwdHashHex=OpenCrypt.byteArrayToHex(pwdHash);
 		m.setPwd(pwdHashHex);
-		m=memberDao.login(m);
+		
+		Member member = login(m);
 
-		if(m!=null) {
+		if(member!=null) {
 				String salt=UUID.randomUUID().toString();
 				byte[] originalHash=OpenCrypt.getSHA256(userId, salt);
 				String myToken=OpenCrypt.byteArrayToHex(originalHash);

@@ -11,4 +11,11 @@ public interface MemberDao {
 
 	public Member login(Member m) throws Exception;
 
+    public int getLoginCount(String userId) throws Exception;
+
+    public void incrementLoginCount(String userId) throws Exception;
+
+    public void resetLoginCount(String userId) throws Exception;
+
+    public boolean isTimePassed(String userId) throws Exception;
 }
