@@ -15,8 +15,9 @@
     <script>
         async function fetchFileInfo() {
             try{
+                const shareId = sessionStorage.getItem("userId");
                 const token = window.location.search.split('=').pop(); // URL에서 token 가져오기
-                const response = await axios.post(`http://localhost:8080/share/shareUser`, {token, shareId : null});
+                const response = await axios.post(`http://localhost:8080/share/shareUser`, {token, shareId : shareId});
                 console.log(response);
                 if (response.status == 200) {
                     const file = response.data;
@@ -29,32 +30,28 @@
                 }
             }catch(e){
                 alert("로그인이 필요한 작업입니다.");
-                window.location.replace('http://127.0.0.1:5500/MiniProject_Front/Front/login.html');
+                window.location.href = "/login.html";
             }
         }
 
         async function downloadFile() {
+            const shareId = sessionStorage.getItem("userId");
             const token = window.location.search.split('=').pop();
-            if(userId !== null){
-                console.log()
-                window.location.replace('http://127.0.0.1:5500/MiniProject_Front/Front/login.html');
-            }else{
-                const response = await axios.post(`http://localhost:8080/share/download`, {token, shareId : null, shareUser : false});
+            const response = await axios.post(`http://localhost:8080/share/download`, {token, shareId : shareId, shareUser : !(shareId === null)});
 
-                if (response.status === 200) {
-                    const { fileName, file } = response.data;
-                    const blob = new Blob([new Uint8Array(atob(file).split('').map(char => char.charCodeAt(0)))], { type: 'application/octet-stream' });
-                    const downloadUrl = window.URL.createObjectURL(blob);
-                    const a = document.createElement("a");
+            if (response.status === 200) {
+                const { fileName, file } = response.data;
+                const blob = new Blob([new Uint8Array(atob(file).split('').map(char => char.charCodeAt(0)))], { type: 'application/octet-stream' });
+                const downloadUrl = window.URL.createObjectURL(blob);
+                const a = document.createElement("a");
 
-                    a.href = downloadUrl;
-                    a.download = fileName;
-                    document.body.appendChild(a);
-                    a.click();
-                    a.remove();
-                } else {
-                    alert("파일 다운로드 실패!");
-                }
+                a.href = downloadUrl;
+                a.download = fileName;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+            } else {
+                alert("파일 다운로드 실패!");
             }
         }
 

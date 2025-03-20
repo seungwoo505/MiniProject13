@@ -43,7 +43,13 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(`${userId}님 로그인을 환영합니다.`);
         sessionStorage.setItem("Authorization", response.data.Authorization);
         sessionStorage.setItem("userId", userId);
-        window.location.href = "index.html"; // 로그인 성공 시 메인 페이지로 이동
+        //window.location.href = "index.html"; // 로그인 성공 시 메인 페이지로 이동
+        console.log(document.referrer);
+        if(document.referrer === "http://localhost:8080/" || document.referrer === "http://localhost:8080/index.html" || document.referrer.indexOf("http://localhost:8080/share/index.html")){
+          window.location = document.referrer;
+        }else{
+          window.location.href = "index.html"; // 로그인 성공 시 메인 페이지로 이동
+        }
       } else {
         alert(response.data.msg || "로그인 실패");
       }

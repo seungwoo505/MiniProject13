@@ -18,7 +18,11 @@ document.addEventListener("DOMContentLoaded", async () => {
     );
     const result = response.data;
     allFilesData = result;
+    console.log("내 문서함 보기");
     if (!result[0].token) {
+      console.log(result);
+      console.log(sessionStorage.getItem("Authorization"));
+      console.log("이거냐?");
       alert("세션이 만료되었거나 토큰이 유효하지 않습니다.");
       sessionStorage.removeItem("Authorization");
       sessionStorage.removeItem("userId");
@@ -168,6 +172,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     const query = e.target.value.toLowerCase();
     const filteredFiles = allFilesData.filter(file => file.fileName.toLowerCase().includes(query));
     renderFileList(filteredFiles);
+  });
+
+  document.getElementById("shareButton").addEventListener("click", () => {
+    addShareItem();
   });
 
 });
@@ -391,7 +399,3 @@ function preview(fileId, userId, index, previewType) {
           });
       }
 }
-
-document.getElementById("shareButton").addEventListener("click", () => {
-  addShareItem();
-});
