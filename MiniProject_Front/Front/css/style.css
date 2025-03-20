@@ -322,7 +322,8 @@ cursor: pointer;
 
 /* 공유 파일 전용 모달 - 버튼 스타일 */
 #downloadFileBtnShare,
-#generateLinkBtnShare {
+#generateLinkBtnShare,
+#uploadBtn {
   background-color: #4285f4;
   padding: 10px;
   color: #fff;
@@ -333,7 +334,8 @@ cursor: pointer;
 }
 
 #downloadFileBtnShare:hover,
-#generateLinkBtnShare:hover {
+#generateLinkBtnShare:hover,
+#uploadBtn:hover {
   background-color: #2f6ad9;
 }
 
@@ -397,4 +399,18 @@ cursor: pointer;
   padding: 10px;
   margin-bottom: 8px;
   border-radius: 4px;
+}
+
+#dropZone {
+  border: 2px dashed #007bff;
+  border-radius: 5px;
+  padding: 30px;
+  text-align: center;
+  color: #007bff;
+  font-size: 1.2em;
+  margin-bottom: 20px;
+  margin-top: 10px;
+}
+#dropZone.hover {
+  background-color: #e9f5ff;
 }

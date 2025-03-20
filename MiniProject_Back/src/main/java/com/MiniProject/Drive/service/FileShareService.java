@@ -29,9 +29,10 @@ public class FileShareService {
 		fs.setToken(token);
 		
 		fileShareDao.deleteShareUser(fs);
+		//fileShareDao.deleteShareURL(fs);
 		fileShareDao.createShareURL(fs);
 
-		return "http://127.0.0.1:5500/MiniProject_Front/Front/share/index.html?token=" + token;
+		return "http://127.0.0.1:5500/share/index.html?token=" + token;
 	}
 
 	public void createShareUser(FileShare fs) throws Exception{
