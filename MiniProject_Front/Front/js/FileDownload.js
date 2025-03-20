@@ -41,7 +41,7 @@ async function downloadFile() {
         }else{
             console.log(shareModal.dataset);
             const response = await axios.post(`${BASE_URL}/share/download`,
-                { fileId: fileId, shareId : userId, userId : shareModal.dataset.ownerId, shareUser : userId === undefined ? false : true }/*,
+                { fileId: fileId, shareId : userId, userId : shareModal.dataset.ownerId, shareUser : userId === null ? false : true }/*,
                 { headers: { "Authorization": token } }*/);
     
             if (response.status === 200) {

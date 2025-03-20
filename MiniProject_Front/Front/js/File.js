@@ -169,7 +169,7 @@ function renderFileList(fileData) {
   const fileListContainer = document.getElementById("file-list");
   fileListContainer.innerHTML = ""; // 기존 내용 초기화
 
-  fileData.forEach(file => {
+  fileData.forEach((file, index) => {
     const fileItem = document.createElement("div");
     fileItem.classList.add("file-item");
 
@@ -184,10 +184,9 @@ function renderFileList(fileData) {
     previewDiv.classList.add("file-item-preview");
     
     if (imageExtensions.includes(extension)) {
-      const img = document.createElement("img");
-      img.src = `/path/to/images/${file.fileName}`;
-      img.alt = "썸네일";
-      previewDiv.appendChild(img);
+      preview(file.fileId, file.userId, index, "img");
+    }else if(["txt"].includes(extension)){
+      preview(file.fileId, file.userId, index, "text");
     }
     fileItem.appendChild(previewDiv);
 
@@ -314,3 +313,60 @@ document.getElementById("shareTarget").addEventListener("keydown", (e) => {
     e.target.value = "";
   }
 });
+
+function base64ToBlob(base64, mimeType) {
+  const byteCharacters = atob(base64);
+  const byteNumbers = new Array(byteCharacters.length);
+  for (let i = 0; i < byteCharacters.length; i++) {
+    byteNumbers[i] = byteCharacters.charCodeAt(i);
+  }
+  const byteArray = new Uint8Array(byteNumbers);
+  return new Blob([byteArray], { type: mimeType });
+}
+
+function preview(fileId, userId, index, previewType) {
+  const data = {
+    fileId : fileId,
+    userId : userId,
+    type : previewType
+  };
+      
+  if (previewType === 'img') {
+    axios.post(`http://localhost:8080/preview`, data)
+         .then(response => {
+            const data = response.data;
+            // data.file가 base64 문자열이어야 함
+            if (typeof data.file === 'string') {
+              // MIME 타입은 실제 파일 형식에 맞게 설정 (여기서는 image/jpeg로 가정)
+              const blob = base64ToBlob(data.file, "image/jpeg");
+              const imageUrl = URL.createObjectURL(blob);
+              const preview = document.getElementsByClassName('file-item-preview')[index];
+              const img = document.createElement("img");
+              img.src = imageUrl;
+              img.alt = "썸네일";
+              preview.appendChild(img);
+            }else {
+              throw new Error("응답 데이터 형식이 올바르지 않습니다.");
+            }
+          })
+          .catch(error => {
+            console.error("이미지 미리보기 오류:", error);
+            alert("이미지 미리보기를 가져오는 중 오류가 발생했습니다.");
+          });
+  } else if (previewType === 'text') {
+        // 텍스트 미리보기: 응답 데이터가 문자열로 전달된다고 가정
+        axios.post(`http://localhost:8080/preview`, data)
+          .then(response => {
+            const text = response.data.file;
+            const preview = document.getElementsByClassName('file-item-preview')[index];
+            const p = document.createElement("p");
+            p.textContent = text;
+            preview.appendChild(p);
+            //document.getElementById('previewImage').style.display = "none";
+          })
+          .catch(error => {
+            console.error("텍스트 미리보기 오류:", error);
+            alert("텍스트 미리보기를 가져오는 중 오류가 발생했습니다.");
+          });
+      }
+}
