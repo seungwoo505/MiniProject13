@@ -45,7 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sessionStorage.setItem("userId", userId);
         //window.location.href = "index.html"; // 로그인 성공 시 메인 페이지로 이동
         console.log(document.referrer);
-        if(document.referrer === "http://localhost:8080/" || document.referrer === "http://localhost:8080/index.html" || document.referrer.indexOf("http://localhost:8080/share/index.html")){
+        if(document.referrer === "http://127.0.0.1:5500/" || document.referrer === "http://127.0.0.1:5500/index.html" || document.referrer.indexOf("http://127.0.0.1:5500/share/index.html") !== -1){
           window.location = document.referrer;
         }else{
           window.location.href = "index.html"; // 로그인 성공 시 메인 페이지로 이동
