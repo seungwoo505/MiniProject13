@@ -99,7 +99,7 @@
                 const blob = new Blob([new Uint8Array(atob(file).split('').map(char => char.charCodeAt(0)))], { type: 'application/octet-stream' });
                 const downloadUrl = window.URL.createObjectURL(blob);
                 const a = document.createElement("a");
-
+                sessionStorage.setItem("Authorization", response.data.token);
                 a.href = downloadUrl;
                 a.download = fileName;
                 document.body.appendChild(a);
