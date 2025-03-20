@@ -1,3 +1,5 @@
+let allFilesData = [];
+
 document.addEventListener("DOMContentLoaded", async () => {
   const userId = sessionStorage.getItem("userId");
   const token = sessionStorage.getItem("Authorization");
@@ -15,7 +17,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       { headers: { "Authorization": token } }
     );
     const result = response.data;
-
+    allFilesData = result;
     if (!result[0].token) {
       alert("세션이 만료되었거나 토큰이 유효하지 않습니다.");
       sessionStorage.removeItem("Authorization");
@@ -61,6 +63,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         { headers: { "Authorization": token } }
       );
       const result = response.data;
+      allFilesData = result;
+
       if (!result[0].token) {
         alert("세션이 만료되었거나 토큰이 유효하지 않습니다.");
         sessionStorage.removeItem("Authorization");
@@ -100,6 +104,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         { headers: { "Authorization": token } }
       );
       const result = response.data;
+      allFilesData = result;
+
       console.log(response);
       if (!result[0].token) {
         alert("세션이 만료되었거나 토큰이 유효하지 않습니다.");
@@ -137,11 +143,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
 
-
-  document.getElementById("shareButton").addEventListener("click", () => {
-    alert("공유하는 기능 구현 예정");
-  });
-
   document.getElementById("generateLinkBtn").addEventListener("click", () => {
     const userId = sessionStorage.getItem("userId");
     const fileId = document.getElementById("fileDetailModal").dataset.fileId;
@@ -160,6 +161,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         alert('공유에 실패했습니다.');
         console.error('공유 실패:', error);
       });
+  });
+
+  // 검색 입력 필드 이벤트: 입력할 때마다 전체 파일 데이터에서 검색어 필터링 후 렌더링
+  document.getElementById("search-bar").addEventListener("input", (e) => {
+    const query = e.target.value.toLowerCase();
+    const filteredFiles = allFilesData.filter(file => file.fileName.toLowerCase().includes(query));
+    renderFileList(filteredFiles);
   });
 
 });
@@ -230,6 +238,7 @@ function openFileDetailModal(file) {
   document.getElementById("detailFileOwner").textContent = `소유자: ${file.userId}`;
 
   loadShareList(file.fileId);
+  loadComments(file.fileId);
 }
 
 // 공유 파일 상세 모달 열기
@@ -264,6 +273,8 @@ function openShareFileDetailModal(file) {
       shareModal.style.display = "none";
     }
   });
+
+  loadShareComments(file.fileId);
 }
 
 function loadShareList(fileId) {
@@ -293,24 +304,34 @@ function loadShareList(fileId) {
     });
 }
 
+function addShareItem() {
+  const shareTarget = document.getElementById("shareTarget");
+  const shareId = shareTarget.value.trim();
+  if (!shareId){
+     alert("공유할 대상 ID를 입력해주세요.");
+     return;
+  }
+  
+  const shareList = document.getElementById('shareList');
+  const li = document.createElement('li');
+  li.className = 'list-group-item';
+  li.textContent = shareId;
+  
+  const deleteBtn = document.createElement("button");
+  deleteBtn.textContent = "삭제";
+  deleteBtn.className = "btn btn-danger btn-sm ms-2"; // Bootstrap 스타일 적용
+  deleteBtn.addEventListener("click", () => {
+    shareList.removeChild(li); // 리스트에서 해당 요소 삭제
+  });
+  
+  li.appendChild(deleteBtn);
+  shareList.appendChild(li);
+  shareTarget.value = ""; // 입력란 초기화
+}
+
 document.getElementById("shareTarget").addEventListener("keydown", (e) => {
   if(e.key === "Enter"){
-    const shareId = e.target.value; 
-
-    const shareList = document.getElementById('shareList');
-    const li = document.createElement('li');
-    li.className = 'list-group-item';
-    li.textContent = shareId;
-
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "삭제";
-    deleteBtn.className = "btn btn-danger btn-sm ms-2"; // Bootstrap 스타일 적용 가능
-    deleteBtn.addEventListener("click", () => {
-      shareList.removeChild(li); // 리스트에서 해당 요소 삭제
-    });
-    li.appendChild(deleteBtn);
-    shareList.appendChild(li);
-    e.target.value = "";
+    addShareItem();
   }
 });
 
@@ -370,3 +391,7 @@ function preview(fileId, userId, index, previewType) {
           });
       }
 }
+
+document.getElementById("shareButton").addEventListener("click", () => {
+  addShareItem();
+});

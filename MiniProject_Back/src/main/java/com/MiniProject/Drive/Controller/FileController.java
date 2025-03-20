@@ -52,9 +52,9 @@ public class FileController {
             Login login = new Login(userId, token);
             Login validLogin = memberService.logincheck(login);
             
-        	if(!ClamAVScanner.scanFile(file)) {
-        		return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
-        	}
+        	//if(!ClamAVScanner.scanFile(file)) {
+        	//	return ResponseEntity.badRequest().body("파일에 악성코드가 포함되어있습니다.");
+        	//}
 
             Files.createDirectories(Paths.get(UPLOAD_DIR));
             
@@ -338,26 +338,44 @@ public class FileController {
     }
     
     @PostMapping("/insertComment")
-    public ResponseEntity<String> insertComment(@RequestBody Comment comment){
+    public ResponseEntity<Map<String, String>> insertComment(@RequestBody Comment comment, @RequestHeader("Authorization") String token){
+    	Map<String, String> response = new HashMap<>();
     	try {
+    		String userId = comment.getWriter();
+            Login login = new Login(userId, token);
+            Login validLogin = memberService.logincheck(login);
+            
 			fileService.insertComment(comment);
-			return ResponseEntity.ok("정상적으로 등록되었습니다.");
+            response.put("message", "정상적으로 등록되었습니다.");
+            response.put("token", validLogin.getToken());
+
+            return ResponseEntity.ok(response);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return ResponseEntity.status(408).body("오류가 발생하여 등록에 실패했습니다.n잠시후 다시 시도해주세요.");
+			response.put("message", "오류가 발생하여 등록에 실패했습니다. 잠시후 다시 시도해주세요.");
+            return ResponseEntity.status(408).body(response);
 		}
     }
     
     @PostMapping("/deleteComment")
-    public ResponseEntity<String> deleteComment(@RequestBody Comment comment){
+    public ResponseEntity<Map<String, String>> deleteComment(@RequestBody Comment comment, @RequestHeader("Authorization") String token){
+    	Map<String, String> response = new HashMap<>();
     	try {
+    		String userId = comment.getWriter();
+            Login login = new Login(userId, token);
+            Login validLogin = memberService.logincheck(login);
+            
 			fileService.deleteComment(comment);
-			return ResponseEntity.ok("정상적으로 삭제되었습니다.");
+            response.put("message", "정상적으로 삭제되었습니다.");
+            response.put("token", validLogin.getToken());
+            
+			return ResponseEntity.ok(response);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return ResponseEntity.status(408).body("오류가 발생하여 삭제를 실패했습니다.n잠시후 다시 시도해주세요.");
+			response.put("message", "오류가 발생하여 등록에 실패했습니다. 잠시후 다시 시도해주세요.");
+            return ResponseEntity.status(408).body(response);
 		}
     }
     

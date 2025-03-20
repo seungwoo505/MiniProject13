@@ -352,3 +352,49 @@ cursor: pointer;
 }
 
 
+.sharTarget-div {
+  position: relative;
+  width: 100%; 
+}
+
+.sharTarget-div input {
+  width: 100%;
+  padding-right: 60px; 
+  box-sizing: border-box;
+}
+
+.sharTarget-div button {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  background-color: #4285f4;
+  color: #fff;
+  box-sizing: border-box;
+  border-radius: 4px;
+  margin-right: 5px;
+}
+
+#commentSection, 
+#shareCommentSection {
+  border-top: 1px solid #ddd;
+  padding-top: 15px;
+  margin-top: 20px;
+}
+
+#commentList, 
+#shareCommentList {
+  max-height: 300px;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.comment-item {
+  border: 1px solid #ccc;
+  padding: 10px;
+  margin-bottom: 8px;
+  border-radius: 4px;
+}
