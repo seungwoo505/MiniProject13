@@ -150,21 +150,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   document.getElementById("generateLinkBtn").addEventListener("click", () => {
     const userId = sessionStorage.getItem("userId");
     const fileId = document.getElementById("fileDetailModal").dataset.fileId;
-
+    const token = sessionStorage.getItem("Authorization");
     const shareIds = document.getElementById('shareList').innerText.trim().split("삭제");
 
     const shareUser = !shareIds.every(item => item === "");
     
-    axios.post('http://localhost:8080/share/create', { userId, fileId, shareIds, shareUser})
-      .then(response => {
-        console.log(response.data);
-        alert(`공유 성공! : ${response.data}`);
-        loadShareList(fileId);
-      })
-      .catch(error => {
-        alert('공유에 실패했습니다.');
-        console.error('공유 실패:', error);
-      });
+    axios.post('http://localhost:8080/share/create', { userId, fileId, shareIds, shareUser}, { headers: { "Authorization" : token }})
+    .then(response => {
+      sessionStorage.setItem("Authorization", response.data.token);
+      console.log(response.data);
+      const shareUrl = response.data.shareUrl;
+      const message = response.data.message;
+      alert(shareUrl);
+      loadShareList(fileId);
+    })
+    .catch(error => {
+      alert('공유에 실패했습니다.');
+      console.error('공유 실패:', error);
+    });
   });
 
   // 검색 입력 필드 이벤트: 입력할 때마다 전체 파일 데이터에서 검색어 필터링 후 렌더링
