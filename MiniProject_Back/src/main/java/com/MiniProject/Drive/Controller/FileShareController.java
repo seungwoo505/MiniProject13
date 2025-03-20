@@ -103,6 +103,8 @@ public class FileShareController {
 				if(fs2 == null) {
 					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 				}
+			}else {
+				
 			}
 
 			return ResponseEntity.ok(fs);
@@ -139,7 +141,6 @@ public class FileShareController {
 	@PostMapping("/download")
 	public ResponseEntity<Map<String, Object>> downloadShareURL(@RequestBody Map<String, String> map){
 		try {
-			System.out.println("수행중");
 			FileShare fs = new FileShare();
 			if(map.get("token") != null) {
 				fs = fileShareService.selectShareURL(map.get("token"));
@@ -148,9 +149,6 @@ public class FileShareController {
 			if(fs == null && map.get("shareUser").equals(0)) {
 				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 			}
-			
-			System.out.println(map.get("shareUser"));
-			System.out.println(map.get("shareUser"));
 			
 			boolean shareUser = map.get("shareUser").toString().equals("true");
 			
