@@ -10,7 +10,6 @@ public class MyFile {
 
 	public MyFile() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public MyFile(String fileId, String userId, String securityName, String securityDetail, byte[] security,
 			byte[] security2, Date uploadDate, Date updateDate) {

@@ -26,7 +26,6 @@ public class Member {
 	}
 	public Member() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	public Member(String userId, String pwd, Date registDate) {
 		super();

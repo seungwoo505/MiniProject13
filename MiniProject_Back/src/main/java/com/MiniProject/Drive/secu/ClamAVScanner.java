@@ -8,8 +8,16 @@ import fi.solita.clamav.ClamAVClient;
 
 public class ClamAVScanner {
 
-    private static final String CLAMAV_HOST = "localhost"; // ClamAV 데몬 호스트
-    private static final int CLAMAV_PORT = 3310;           // 기본 ClamAV 포트
+	/**
+	 * ClamAV : 오픈 소스 안티 바이러스 프로그램
+	 * 
+	 * ClamAV 라는 프로그램 필수 설치
+	 * 
+	 * 동작을 시켜 3310 포트로 잘 동작하는 것까지 확인
+	 * 
+	 */
+    private static final String CLAMAV_HOST = "localhost";
+    private static final int CLAMAV_PORT = 3310;
 
     /**
      * 업로드된 파일을 ClamAV로 스캔하여, 악성 코드가 있는지 검사

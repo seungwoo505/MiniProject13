@@ -113,8 +113,6 @@ public class FileShareController {
 				if(fs2 == null) {
 					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 				}
-			}else {
-				
 			}
 
 			return ResponseEntity.ok(fs);
@@ -140,7 +138,6 @@ public class FileShareController {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 			List<String> list = new ArrayList<>();
-			System.out.println(e);
 			list.add("정보를 불러오는 중 오류가 발생했습니다.");
 			return ResponseEntity.status(404).body(list);
 		}
@@ -154,12 +151,13 @@ public class FileShareController {
 			FileShare fs = new FileShare();
 			if(map.get("token") != null) {
 				fs = fileShareService.selectShareURL(map.get("token"));
+				
+				if(fs == null) {
+					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+				}
+				
 				map.put("fileId", fs.getFileId());
 				map.put("userId", fs.getUserId());
-			}
-
-			if(fs == null && map.get("shareUser").equals(0)) {
-				return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 			}
 			
 			boolean shareUser = map.get("shareUser").toString().equals("true");
@@ -176,9 +174,6 @@ public class FileShareController {
 					return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
 				}
 			}
-
-			//map.put("fileId", fs.getFileId());
-			//map.put("userId", fs.getUserId());
 
 			MyFile f = fileService.downloadFile(map);
 
