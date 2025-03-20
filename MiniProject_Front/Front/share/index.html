@@ -6,12 +6,55 @@
     <title>파일 공유받기</title>
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
-<body>
-    <h2>파일 공유받기</h2>
-    
-    <p id="file-info">파일 정보를 불러오는 중...</p>
-    <button id="download-btn" style="display: none;" onclick="downloadFile()">다운로드</button>
+<style>
+    /* 브라우저 기본 여백 제거 및 전체 높이 사용 */
+    html, body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+    }
 
+    /* 화면을 중앙 정렬하는 컨테이너 */
+    .center-container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    /* 네모 박스 스타일 */
+    .box {
+        border: 1px solid #ccc;   
+        padding: 20px;        
+        border-radius: 8px;      
+        background-color: #fafafa; 
+        text-align: center;     
+        min-width: 300px;        
+    }
+
+    /* 버튼 등 간단한 간격 조정 */
+    button {
+        background-color: #4285f4;
+        padding: 10px;
+        color: #fff;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-top: 10px;
+        display: block;
+        margin: 10px auto; /* 위쪽 여백 10px, 좌우 자동 정렬 */
+    }
+</style>
+<body>
+<!-- 화면 전체를 감싸는 컨테이너 -->
+<div class="center-container">
+    <!-- 내용물을 감싸는 네모 박스 -->
+    <div class="box">
+        <h2>파일 공유받기</h2>
+        <p id="file-info">파일 정보를 불러오는 중...</p>
+        <button id="download-btn" style="display: none;" onclick="downloadFile()"><i class="fa-solid fa-download"></i> 다운로드</button>
+    </div>
+</div>
     <script>
         async function fetchFileInfo() {
             try{
@@ -22,7 +65,7 @@
                 if (response.status == 200) {
                     const file = response.data;
 
-                    document.getElementById('file-info').textContent = `파일 이름: ${file.fileName} | 소유자 : ${file.userId}`;
+                    document.getElementById('file-info').innerHTML = "파일 이름: " + file.fileName + "<br><br>소유자: " + file.userId;
                     document.getElementById('download-btn').style.display = "block";
                 } else {
                     console.log(response);
@@ -57,5 +100,6 @@
 
         fetchFileInfo();
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </body>
 </html>
