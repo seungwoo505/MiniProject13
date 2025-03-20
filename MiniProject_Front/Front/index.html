@@ -2,12 +2,12 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>유레카 드라이브</title>
+  <title>비밀상자</title>
 </head>
 <body>
   <header>
     <div class="header-left">
-      <span class="drive-text">유레카 드라이브</span>
+      <span class="drive-text">비밀상자</span>
     </div>
     <div class="header-center">
       <input type="text" id="search-bar" placeholder="검색어를 입력하세요..." />
@@ -71,9 +71,11 @@
 
       <div class="share-div" id="shar-div">
         <h2 class="share-target-text">공유 대상</h2>
+        <p> - 공유 대상이 없을 경우 해당 링크는 모든 사용자가 접근이 가능합니다.</p>
+        <p> - 공유 대상이 있을 경우 해당 사용자만 접근이 가능합니다.</p>
         <ul id="shareList" class="list-group"></ul>
          <div class="sharTarget-div">
-          <input type="text" id="shareTarget" placeholder="공유 대상 (공유할 대상 ID)">
+          <input type="text" id="shareTarget" placeholder="공유 대상 ID를 입력하고 링크 생성을 눌러주세요">
           <button class="fileDetailButton" id="shareButton"><i class="fa-solid fa-share-nodes"></i> 공유</button>
          </div>
       </div>

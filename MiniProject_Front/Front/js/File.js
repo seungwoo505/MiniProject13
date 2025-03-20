@@ -1,4 +1,5 @@
 let allFilesData = [];
+let shareListChanged = false;
 
 document.addEventListener("DOMContentLoaded", async () => {
   const userId = sessionStorage.getItem("userId");
@@ -139,14 +140,40 @@ document.addEventListener("DOMContentLoaded", async () => {
   const detailModal = document.getElementById("fileDetailModal");
   const closeDetailBtn = document.querySelector(".close-file-detail");
   closeDetailBtn.addEventListener("click", () => {
-    detailModal.style.display = "none";
-  });
-  window.addEventListener("click", (event) => {
-    if (event.target === detailModal) {
+    if (shareListChanged) {
+      if (confirm("변경된 내용이 있습니다. 정말로 닫으시겠습니까?")) {
+        shareListChanged = false;
+        document.getElementById("shareTarget").value = "";
+        detailModal.style.display = "none";
+      }
+    } else {
+      document.getElementById("shareTarget").value = "";
       detailModal.style.display = "none";
     }
   });
+  window.addEventListener("click", (event) => {
+  if (event.target === detailModal) {
+    if (shareListChanged) {
+      if (confirm("변경된 내용이 있습니다. 정말로 닫으시겠습니까?")) {
+        shareListChanged = false;
+        document.getElementById("shareTarget").value = "";
+        detailModal.style.display = "none";
+      }
+    } else {
+      document.getElementById("shareTarget").value = "";
+      detailModal.style.display = "none";
+    }
+  }
+  });
 
+  document.getElementById("shareTarget").addEventListener("input", (e) => {
+    if (e.target.value.trim() === "") {
+      shareListChanged = false;
+    } else {
+      shareListChanged = true;
+    }
+  });
+  
   document.getElementById("generateLinkBtn").addEventListener("click", () => {
     const userId = sessionStorage.getItem("userId");
     const fileId = document.getElementById("fileDetailModal").dataset.fileId;
@@ -252,6 +279,8 @@ function openFileDetailModal(file) {
   loadComments(file.fileId);
 }
 
+
+
 // 공유 파일 상세 모달 열기
 function openShareFileDetailModal(file) {
   // 공유 파일 전용 모달을 가져옴
@@ -304,6 +333,9 @@ function loadShareList(fileId) {
         deleteBtn.textContent = "삭제";
         deleteBtn.className = "btn btn-danger btn-sm ms-2"; // Bootstrap 스타일 적용 가능
         deleteBtn.addEventListener("click", () => {
+          console.log("삭제 버튼 클릭됨 : " + shareListChanged);
+          shareListChanged = true;
+          console.log("삭제 버튼 바뀜뀜 : " + shareListChanged);
           shareList.removeChild(li); // 리스트에서 해당 요소 삭제
         });
         li.appendChild(deleteBtn);
@@ -314,6 +346,8 @@ function loadShareList(fileId) {
       console.error('공유 대상 목록 로드 실패:', error);
     });
 }
+
+
 
 function addShareItem() {
   const shareTarget = document.getElementById("shareTarget");
@@ -332,19 +366,25 @@ function addShareItem() {
   deleteBtn.textContent = "삭제";
   deleteBtn.className = "btn btn-danger btn-sm ms-2"; // Bootstrap 스타일 적용
   deleteBtn.addEventListener("click", () => {
+    console.log("삭제 버튼 클릭됨");
     shareList.removeChild(li); // 리스트에서 해당 요소 삭제
+    shareListChanged = true;
   });
   
   li.appendChild(deleteBtn);
   shareList.appendChild(li);
   shareTarget.value = ""; // 입력란 초기화
+  shareListChanged = true;
 }
 
 document.getElementById("shareTarget").addEventListener("keydown", (e) => {
   if(e.key === "Enter"){
     addShareItem();
+    shareListChanged = true;
   }
 });
+
+
 
 function base64ToBlob(base64, mimeType) {
   const byteCharacters = atob(base64);
