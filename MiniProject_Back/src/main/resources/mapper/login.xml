@@ -11,7 +11,7 @@
 	    VALUES (#{userId}, #{token})
 	    ON DUPLICATE KEY UPDATE 
         token = #{token}, 
-        logintime = CURRENT_TIMESTAMP;
+        logintime = CURRENT_TIMESTAMP
     </insert>
     
 	<delete id="deleteToken">
