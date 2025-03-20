@@ -17,6 +17,11 @@
   	values(#{fileId}, #{shareId})
   </insert>
   
+  <delete id="deleteShareURL" parameterType="FileShare">
+  	delete from FileShareURL
+  	where fileId=#{fileId}
+  </delete>
+  
   <delete id="deleteShareUser" parameterType="FileShare">
   	delete from FileShareUser
   	where fileId=#{fileId}
