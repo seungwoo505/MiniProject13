@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (token && userId) {
       memberContainer.innerHTML = `
         <div style="display: flex; align-items: center;">
-          <h3 style="margin: 0;">${userId}님 환영합니다.</h3>
+          <b style="margin: 0; font-size: 18px; font:bold;">${userId}님 환영합니다</b>
           <button id="logoutButton" style="margin-left: 10px; background-color: red; color: white; border: none; padding: 5px 10px; border-radius: 4px; cursor: pointer;">
             로그아웃
           </button>

@@ -193,7 +193,7 @@ header {
   margin: 100px auto;
   padding: 20px;
   border: 1px solid #888;
-  width: 400px;
+  width: 500px;
   position: relative;
   border-radius: 8px;
 }
@@ -225,7 +225,11 @@ header {
   margin-bottom: 25px;
 }
 
-
+#share-btn-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
 
 /* 파일 업로드/다운로드 폼 */
 .file-container {
@@ -287,6 +291,15 @@ header {
 #generateLinkBtn {
   float: right;
 }
+
+.btn-primary.mt-2 {
+  background-color: #4285f4 !important;
+}
+
+.btn-primary.mt-2:hover{
+  background-color: #2f6ad9 !important;
+}
+
 
 .fileDetailButton {
 background-color: #4285f4;
@@ -410,7 +423,12 @@ cursor: pointer;
   font-size: 1.2em;
   margin-bottom: 20px;
   margin-top: 10px;
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+
 #dropZone.hover {
   background-color: #e9f5ff;
 }

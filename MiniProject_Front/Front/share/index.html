@@ -7,14 +7,12 @@
     <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 </head>
 <style>
-    /* 브라우저 기본 여백 제거 및 전체 높이 사용 */
     html, body {
         margin: 0;
         padding: 0;
         height: 100%;
     }
 
-    /* 화면을 중앙 정렬하는 컨테이너 */
     .center-container {
         display: flex;
         justify-content: center;
@@ -22,8 +20,8 @@
         height: 100%;
     }
 
-    /* 네모 박스 스타일 */
     .box {
+        position: relative;
         border: 1px solid #ccc;   
         padding: 20px;        
         border-radius: 8px;      
@@ -32,7 +30,6 @@
         min-width: 300px;        
     }
 
-    /* 버튼 등 간단한 간격 조정 */
     button {
         background-color: #4285f4;
         padding: 10px;
@@ -42,14 +39,29 @@
         cursor: pointer;
         margin-top: 10px;
         display: block;
-        margin: 10px auto; /* 위쪽 여백 10px, 좌우 자동 정렬 */
+        margin: 10px auto; 
     }
+
+    .home-icon {
+        position: absolute;
+        top: 5px;
+        left: 15px;
+        font-size: 24px;
+        color: rgb(84, 104, 128);
+        text-decoration: none; 
+    }
+
+    .home-icon:hover{
+        color: #343b41;
+    }
+
 </style>
 <body>
-<!-- 화면 전체를 감싸는 컨테이너 -->
 <div class="center-container">
-    <!-- 내용물을 감싸는 네모 박스 -->
     <div class="box">
+        <a href="http://127.0.0.1:5500/index.html" class="home-icon">
+            <i class="fa-solid fa-house"></i>
+          </a>
         <h2>파일 공유받기</h2>
         <p id="file-info">파일 정보를 불러오는 중...</p>
         <button id="download-btn" style="display: none;" onclick="downloadFile()"><i class="fa-solid fa-download"></i> 다운로드</button>
