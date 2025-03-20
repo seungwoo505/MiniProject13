@@ -42,7 +42,7 @@
         <div id="dropZone">
           여기에 파일을 드래그 앤 드롭하세요.
         </div>
-        <button id="uploadBtn" class="">파일 업로드</button>
+        <button id="uploadBtn" type="button">파일 업로드</button>
         
         <!-- 결과 메시지 영역 -->
         <div id="result" class="resultmsg"></div>
@@ -81,6 +81,7 @@
       </div>
 
       <div class="share-btn-div" id="share-btn-div">
+        <button class="btn btn-danger btn-sm ms-2" id="deleteButton"> 삭제</button>
         <button class="fileDetailButton" id="generateLinkBtn"><i class="fa-solid fa-link"></i> 링크 생성</button>
       </div>
 
@@ -137,5 +138,6 @@
   <script src="./js/File.js"></script>
   <script src="./js/index.js"></script>
   <script src="./js/FileComment.js"></script>
+  <script src="./js/FileDelete.js"></script>
 </body>
 </html>
