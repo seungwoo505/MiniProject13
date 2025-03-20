@@ -9,6 +9,8 @@ import com.MiniProject.Drive.dto.FileShare;
 @Mapper
 public interface FileShareDao {
 	public void createShareURL(FileShare fs) throws Exception;
+	
+	public void deleteShareURL(FileShare fs) throws Exception;
 
 	public void createShareUser(FileShare fs) throws Exception;
 

@@ -29,7 +29,7 @@ public class FileShareService {
 		fs.setToken(token);
 		
 		fileShareDao.deleteShareUser(fs);
-		//fileShareDao.deleteShareURL(fs);
+		fileShareDao.deleteShareURL(fs);
 		fileShareDao.createShareURL(fs);
 
 		return "http://127.0.0.1:5500/share/index.html?token=" + token;
