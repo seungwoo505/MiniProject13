@@ -35,7 +35,14 @@
           const commentDiv = document.createElement('div');
           commentDiv.className = 'comment-item';
           commentDiv.innerHTML = `
-            <p>${comment.comment}</p>
+            <p>${
+              comment.comment
+                     .replace(/&/g, "&amp;")
+                     .replace(/</g, "&lt;")
+                     .replace(/>/g, "&gt;")
+                     .replace(/"/g, "&quot;")
+                     .replace(/'/g, "&#039;")
+            }</p>
             <small>작성자: ${comment.writer} / 작성일: ${new Date(comment.createDate).toLocaleString()}</small>
             <br>
             <button class="btn btn-sm btn-danger" onclick="deleteComment(${comment.id}, '${fileId}')">삭제</button>

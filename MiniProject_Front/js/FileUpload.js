@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
     dropZone.classList.remove("hover");
     const files = e.dataTransfer.files;
     if (files.length > 0) {
+      if(files.length > 5) alert("파일은 최대 5개 까지 가능합니다.");
       // 우선 배열로 변환 후 5개까지만 선택
       let fileArray = Array.from(files).slice(0, 5);
 

@@ -346,6 +346,15 @@ public class FileController {
     		String userId = comment.getWriter();
             Login login = new Login(userId, token);
             Login validLogin = memberService.logincheck(login);
+            comment.setComment
+            (
+            		comment.getComment()
+		            	   .replaceAll("&", "&amp;")
+		                   .replaceAll("<", "&lt;")
+		                   .replaceAll(">", "&gt;")
+		                   .replaceAll("\"", "&quot;")
+		                   .replaceAll("'", "&#x27;")
+		    );
             
 			fileService.insertComment(comment);
             response.put("message", "정상적으로 등록되었습니다.");

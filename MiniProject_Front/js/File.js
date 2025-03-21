@@ -188,7 +188,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       console.log(response.data);
       const shareUrl = response.data.shareUrl;
       const message = response.data.message;
-      alert(shareUrl);
+      alert("공유 완료 : " + shareUrl);
       loadShareList(fileId);
       shareListChanged = false;
     })
@@ -438,8 +438,8 @@ function preview(fileId, userId, index, previewType) {
             //document.getElementById('previewImage').style.display = "none";
           })
           .catch(error => {
-            console.error("텍스트 미리보기 오류:", error);
-            alert("텍스트 미리보기를 가져오는 중 오류가 발생했습니다.");
+            //console.error("텍스트 미리보기 오류:", error);
+            //alert("텍스트 미리보기를 가져오는 중 오류가 발생했습니다.");
           });
       }
 }
