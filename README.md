@@ -19,6 +19,11 @@
 - 백엔드
 	- Spring(STS)
 	- MariaDB
+- 협업 툴
+	- Github
+	- Discord
+	- Zoom
+	- Slack
 
 ## 개발 기간
 
